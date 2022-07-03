@@ -3,8 +3,12 @@ buildscript {
         mavenCentral()
         mavenLocal()
         maven {
+            name = "tbc"
+            url = "https://nexus.teamblackcrystal.com/repository/maven-public/"
+        }
+        maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net/"
         }
         maven {
             name = "sonatype"
@@ -12,7 +16,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'xyz.akirin.minecraftforge.gradle:ForgeGradle:1.2.2-rei.2.2.0'
     }
 }
 
@@ -39,7 +43,7 @@ minecraft {
     fmlDir = projectDir.getAbsolutePath() + "/fml";
     mainClass = 'cpw.mods.fml.relauncher.ServerLaunchWrapper'
     tweakClass = 'cpw.mods.fml.common.launcher.FMLTweaker'
-    installerVersion = "1.4"
+    installerVersion = "1.6"
 }
 
 group = 'net.minecraftforge'
@@ -52,11 +56,6 @@ jenkins {
 // crowdin stuff
 if (project.hasProperty("crowdinKey"))
     tasks.getLocalizations.apiKey = project.crowdinKey
-
-
-launch4j {
-    jreMinVersion = '1.6.0'
-}
 
 uploadArchives {
     repositories {
