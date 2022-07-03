@@ -26,7 +26,6 @@ build-job:       # This job runs in the build stage, which runs first.
     - chmod +x ./gradlew
     - ./gradlew setupForge uploadArchives
   cache:
-    key: gradle
     paths:
       - /root/.gradle
   artifacts:
