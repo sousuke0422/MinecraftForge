@@ -22,12 +22,14 @@ build-job:       # This job runs in the build stage, which runs first.
   image: openjdk:8
   stage: build
   script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
     - git config --global user.email "noreply@example.com"
     - chmod +x ./gradlew
     - ./gradlew setupForge uploadArchives
   cache:
     paths:
-      - /root/.gradle
+    - .gradle/wrapper
+    - .gradle/caches
   artifacts:
     paths:
       - build/distributions/**
