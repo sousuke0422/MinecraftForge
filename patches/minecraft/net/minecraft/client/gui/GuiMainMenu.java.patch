@@ -8,7 +8,31 @@
  import org.apache.commons.io.Charsets;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
-@@ -507,6 +508,7 @@
+@@ -196,13 +197,16 @@
+     {
+         this.field_146292_n.add(new GuiButton(1, this.field_146294_l / 2 - 100, p_73969_1_, I18n.func_135052_a("menu.singleplayer", new Object[0])));
+         this.field_146292_n.add(new GuiButton(2, this.field_146294_l / 2 - 100, p_73969_1_ + p_73969_2_ * 1, I18n.func_135052_a("menu.multiplayer", new Object[0])));
+-        GuiButton realmsButton = new GuiButton(14, this.field_146294_l / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.func_135052_a("menu.online", new Object[0]));
+-        GuiButton fmlModButton = new GuiButton(6, this.field_146294_l / 2 - 100, p_73969_1_ + p_73969_2_ * 2, "Mods");
+-        fmlModButton.field_146128_h = this.field_146294_l / 2 + 2;
+-        realmsButton.field_146120_f = 98;
+-        fmlModButton.field_146120_f = 98;
+-        this.field_146292_n.add(realmsButton);
+-        this.field_146292_n.add(fmlModButton);
++        this.field_146292_n.add(new GuiButton(6, this.field_146294_l / 2 - 100, p_73969_1_ + p_73969_2_ * 2, "Mods"));
++        /*
++        GuiButton realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.format("menu.online", new Object[0]));
++        GuiButton fmlModButton = new GuiButton(6, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, "Mods");
++        fmlModButton.xPosition = this.width / 2 + 2;
++        realmsButton.width = 98;
++        fmlModButton.width = 98;
++        this.buttonList.add(realmsButton);
++        this.buttonList.add(fmlModButton);
++        */
+     }
+ 
+     private void func_73972_b(int p_73972_1_, int p_73972_2_)
+@@ -507,6 +511,7 @@
                  this.func_73731_b(this.field_146289_q, brd, 2, this.field_146295_m - ( 10 + i * (this.field_146289_q.field_78288_b + 1)), 16777215);
              }
          }
