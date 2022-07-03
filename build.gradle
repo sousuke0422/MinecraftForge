@@ -64,7 +64,7 @@ uploadArchives {
     repositories.mavenDeployer {
         configuration = configurations.deployJars
 
-        if (project.hasProperty("filesmaven")) {
+        if (System.env.MAVEN_USER) {
             logger.info('Publishing to files server')
             /*
             repository(url: project.filesmaven.url) {
