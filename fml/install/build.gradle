@@ -3,7 +3,11 @@ buildscript {
         mavenCentral()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            name = "tbc"
+            url = "https://nexus.teamblackcrystal.com/repository/maven-public/"
         }
         maven {
             name = "sonatype"
@@ -11,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'xyz.akirin.minecraftforge.gradle:ForgeGradle:1.2.2-rei.8.0'
     }
 }
 
