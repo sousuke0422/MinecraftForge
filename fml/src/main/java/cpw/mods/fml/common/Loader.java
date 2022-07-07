@@ -240,7 +240,7 @@ public class Loader
                     {
                         versionMissingMods.add(names.get(modid));
                     }
-                    throw new MissingModsException(versionMissingMods);
+                    throw new MissingModsException(versionMissingMods, mod.getModId(), mod.getName());
                 }
                 reqList.putAll(mod.getModId(), names.keySet());
                 ImmutableList<ArtifactVersion> allDeps = ImmutableList.<ArtifactVersion>builder().addAll(mod.getDependants()).addAll(mod.getDependencies()).build();
@@ -257,7 +257,7 @@ public class Loader
                 if (!versionMissingMods.isEmpty())
                 {
                     FMLLog.severe("The mod %s (%s) requires mod versions %s to be available", mod.getModId(), mod.getName(), versionMissingMods);
-                    throw new MissingModsException(versionMissingMods);
+                    throw new MissingModsException(versionMissingMods, mod.getModId(), mod.getName());
                 }
             }
 

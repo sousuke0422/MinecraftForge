@@ -85,7 +85,7 @@ public class VersionRange
 
         return new VersionRange( recommendedVersion, copiedRestrictions );
     }
-    
+
     /**
      * Factory method, for custom versioning schemes
      * @param version version
@@ -495,6 +495,19 @@ public class VersionRange
             return Joiner.on(',').join(restrictions);
         }
     }
+
+    public String toStringFriendly() {
+        if (recommendedVersion != null) {
+            return recommendedVersion.getVersionString();
+        } else {
+            List<String> friendlyRestrictions = new ArrayList<String>(restrictions.size());
+            for (Restriction restriction : restrictions) {
+                friendlyRestrictions.add(restriction.toStringFriendly());
+            }
+            return Joiner.on(", ").join(friendlyRestrictions);
+        }
+    }
+
 
     public ArtifactVersion matchVersion( List<ArtifactVersion> versions )
     {
