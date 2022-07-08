@@ -1,14 +1,33 @@
 --- ../src-base/minecraft/net/minecraft/client/gui/GuiMainMenu.java
 +++ ../src-work/minecraft/net/minecraft/client/gui/GuiMainMenu.java
-@@ -25,6 +25,7 @@
+@@ -25,6 +25,9 @@
  import net.minecraft.world.demo.DemoWorldServer;
  import net.minecraft.world.storage.ISaveFormat;
  import net.minecraft.world.storage.WorldInfo;
 +import net.minecraftforge.client.ForgeHooksClient;
++import net.minecraftforge.client.gui.NotificationModUpdateScreen;
++
  import org.apache.commons.io.Charsets;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
-@@ -196,13 +197,16 @@
+@@ -61,6 +64,8 @@
+     private int field_92019_w;
+     private ResourceLocation field_110351_G;
+     private static final String __OBFID = "CL_00001154";
++    private GuiButton modButton;
++    private NotificationModUpdateScreen modUpdateNotification;
+ 
+     public GuiMainMenu()
+     {
+@@ -121,6 +126,7 @@
+             this.field_146972_A = I18n.func_135052_a("title.oldgl2", new Object[0]);
+             this.field_104024_v = "https://help.mojang.com/customer/portal/articles/325948?ref=game";
+         }
++        modUpdateNotification = NotificationModUpdateScreen.init(this, modButton);
+     }
+ 
+     public void func_73876_c()
+@@ -196,13 +202,16 @@
      {
          this.field_146292_n.add(new GuiButton(1, this.field_146294_l / 2 - 100, p_73969_1_, I18n.func_135052_a("menu.singleplayer", new Object[0])));
          this.field_146292_n.add(new GuiButton(2, this.field_146294_l / 2 - 100, p_73969_1_ + p_73969_2_ * 1, I18n.func_135052_a("menu.multiplayer", new Object[0])));
@@ -19,7 +38,7 @@
 -        fmlModButton.field_146120_f = 98;
 -        this.field_146292_n.add(realmsButton);
 -        this.field_146292_n.add(fmlModButton);
-+        this.field_146292_n.add(new GuiButton(6, this.field_146294_l / 2 - 100, p_73969_1_ + p_73969_2_ * 2, "Mods"));
++        this.field_146292_n.add(modButton = new GuiButton(6, this.field_146294_l / 2 - 100, p_73969_1_ + p_73969_2_ * 2, "Mods"));
 +        /*
 +        GuiButton realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.format("menu.online", new Object[0]));
 +        GuiButton fmlModButton = new GuiButton(6, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, "Mods");
@@ -32,7 +51,7 @@
      }
  
      private void func_73972_b(int p_73972_1_, int p_73972_2_)
-@@ -507,6 +511,7 @@
+@@ -507,6 +516,7 @@
                  this.func_73731_b(this.field_146289_q, brd, 2, this.field_146295_m - ( 10 + i * (this.field_146289_q.field_78288_b + 1)), 16777215);
              }
          }
@@ -40,3 +59,12 @@
          String s1 = "Copyright Mojang AB. Do not distribute!";
          this.func_73731_b(this.field_146289_q, s1, this.field_146294_l - this.field_146289_q.func_78256_a(s1) - 2, this.field_146295_m - 10, -1);
  
+@@ -518,6 +528,8 @@
+         }
+ 
+         super.func_73863_a(p_73863_1_, p_73863_2_, p_73863_3_);
++
++        modUpdateNotification.func_73863_a(p_73863_1_, p_73863_2_, p_73863_3_);
+     }
+ 
+     protected void func_73864_a(int p_73864_1_, int p_73864_2_, int p_73864_3_)

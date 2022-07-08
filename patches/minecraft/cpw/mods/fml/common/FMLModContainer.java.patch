@@ -1,0 +1,50 @@
+--- ../src-base/minecraft/cpw/mods/fml/common/FMLModContainer.java
++++ ../src-work/minecraft/cpw/mods/fml/common/FMLModContainer.java
+@@ -18,6 +18,8 @@
+ import java.lang.reflect.Field;
+ import java.lang.reflect.Method;
+ import java.lang.reflect.Modifier;
++import java.net.MalformedURLException;
++import java.net.URL;
+ import java.security.cert.Certificate;
+ import java.util.Arrays;
+ import java.util.List;
+@@ -83,6 +85,7 @@
+     private ListMultimap<Class<? extends FMLEvent>,Method> eventMethods;
+     private Map<String, String> customModProperties;
+     private ModCandidate candidate;
++    private URL updateJSONUrl;
+ 
+     public FMLModContainer(String className, ModCandidate container, Map<String,Object> modDescriptor)
+     {
+@@ -211,6 +214,19 @@
+         {
+             minecraftAccepted = Loader.instance().getMinecraftModContainer().getStaticVersionRange();
+         }
++
++        String jsonURL = (String)descriptor.get("updateJSON");
++        if (!Strings.isNullOrEmpty(jsonURL))
++        {
++            try
++            {
++                this.updateJSONUrl = new URL(jsonURL);
++            }
++            catch (MalformedURLException e)
++            {
++                FMLLog.log(Level.DEBUG, "Specified json URL for mod '{}' is invalid: {}", getModId(), jsonURL);
++            }
++        }
+     }
+ 
+     public Properties searchForVersionProperties()
+@@ -626,4 +642,10 @@
+     {
+         return candidate.getContainedPackages();
+     }
++
++    @Override
++    public URL getUpdateUrl()
++    {
++        return updateJSONUrl;
++    }
+ }

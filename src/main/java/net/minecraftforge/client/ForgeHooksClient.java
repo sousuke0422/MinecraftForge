@@ -432,7 +432,8 @@ public class ForgeHooksClient
     public static void renderMainMenu(GuiMainMenu gui, FontRenderer font, int width, int height)
     {
         Status status = ForgeVersion.getStatus();
-        if (status == BETA || status == BETA_OUTDATED)
+        // TODO: remove beta true
+        if (status == BETA || status == BETA_OUTDATED || true)
         {
             // render a warning at the top of the screen,
             String line = I18n.format("forge.update.beta.1", EnumChatFormatting.RED, EnumChatFormatting.RESET);

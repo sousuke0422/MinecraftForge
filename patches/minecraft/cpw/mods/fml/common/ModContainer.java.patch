@@ -1,0 +1,19 @@
+--- ../src-base/minecraft/cpw/mods/fml/common/ModContainer.java
++++ ../src-work/minecraft/cpw/mods/fml/common/ModContainer.java
+@@ -13,6 +13,7 @@
+ package cpw.mods.fml.common;
+ 
+ import java.io.File;
++import java.net.URL;
+ import java.security.cert.Certificate;
+ import java.util.List;
+ import java.util.Map;
+@@ -129,6 +130,8 @@
+ 
+     boolean isImmutable();
+ 
++    URL getUpdateUrl();
++
+     String getDisplayVersion();
+ 
+     VersionRange acceptableMinecraftVersionRange();

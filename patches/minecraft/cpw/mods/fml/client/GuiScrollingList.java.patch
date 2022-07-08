@@ -1,0 +1,47 @@
+--- ../src-base/minecraft/cpw/mods/fml/client/GuiScrollingList.java
++++ ../src-work/minecraft/cpw/mods/fml/client/GuiScrollingList.java
+@@ -12,6 +12,7 @@
+ 
+ package cpw.mods.fml.client;
+ 
++import java.io.IOException;
+ import java.util.List;
+ 
+ import net.minecraft.client.Minecraft;
+@@ -30,7 +31,7 @@
+     protected final int listHeight;
+     protected final int top;
+     protected final int bottom;
+-    private final int right;
++    protected final int right;
+     protected final int left;
+     protected final int slotHeight;
+     private int scrollUpActionId;
+@@ -40,7 +41,7 @@
+     private float initialMouseClickY = -2.0F;
+     private float scrollFactor;
+     private float scrollDistance;
+-    private int selectedIndex = -1;
++    protected int selectedIndex = -1;
+     private long lastClickTime = 0L;
+     private boolean field_25123_p = true;
+     private boolean field_27262_q;
+@@ -451,4 +452,18 @@
+         GL11.glEnable(GL11.GL_ALPHA_TEST);
+         GL11.glEnable(GL11.GL_TEXTURE_2D);
+     }
++
++    public void handleMouseInput(int mouseX, int mouseY)
++    {
++        boolean isHovering = mouseX >= this.left && mouseX <= this.left + this.listWidth &&
++                             mouseY >= this.top && mouseY <= this.bottom;
++        if (!isHovering)
++            return;
++
++        int scroll = Mouse.getEventDWheel();
++        if (scroll != 0)
++        {
++            this.scrollDistance += (float)((-1 * scroll / 120.0F) * this.slotHeight / 2);
++        }
++    }
+ }

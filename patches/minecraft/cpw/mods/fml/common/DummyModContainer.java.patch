@@ -1,0 +1,21 @@
+--- ../src-base/minecraft/cpw/mods/fml/common/DummyModContainer.java
++++ ../src-work/minecraft/cpw/mods/fml/common/DummyModContainer.java
+@@ -13,6 +13,7 @@
+ package cpw.mods.fml.common;
+ 
+ import java.io.File;
++import java.net.URL;
+ import java.security.cert.Certificate;
+ import java.util.Collections;
+ import java.util.List;
+@@ -200,4 +201,10 @@
+     {
+         return ImmutableList.of();
+     }
++
++    @Override
++    public URL getUpdateUrl()
++    {
++        return null;
++    }
+ }
