@@ -30,6 +30,6 @@ build-job:       # This job runs in the build stage, which runs first.
     paths:
     - .gradle/wrapper
     - .gradle/caches
-  artifacts:
-    paths:
-      - build/distributions/**
+#  artifacts:
+#    paths:
+#      - build/distributions/**
