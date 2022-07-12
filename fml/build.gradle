@@ -16,7 +16,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'xyz.akirin.minecraftforge.gradle:ForgeGradle:1.2.2-rei.2.2.0'
+        classpath 'xyz.akirin.minecraftforge.gradle:ForgeGradle:1.2.2-rei.5.0'
     }
 }
 
@@ -38,7 +38,7 @@ minecraft {
     fmlDir = projectDir.getAbsolutePath();
     mainClass = 'cpw.mods.fml.relauncher.ServerLaunchWrapper'
     tweakClass = 'cpw.mods.fml.common.launcher.FMLTweaker'
-    installerVersion = "1.6"
+    installerVersion = "1.7.4"
 }
 
 group = 'net.minecraftforge'
