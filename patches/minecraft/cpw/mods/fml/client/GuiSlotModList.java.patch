@@ -30,11 +30,11 @@
 +    public GuiSlotModList(GuiModList parent, ArrayList<ModContainer> mods, int listWidth, int slotHeight)
      {
 -        super(parent.getMinecraftInstance(), listWidth, parent.field_146295_m, 32, parent.field_146295_m - 66 + 4, 10, 35);
-+        super(parent.getMinecraftInstance(), listWidth, parent.field_146295_m, 32, parent.field_146295_m - 66 + 4, 10, slotHeight);
++        super(parent.getMinecraftInstance(), listWidth, parent.field_146295_m, 32, parent.field_146295_m - 88 + 4, 10, slotHeight, parent.field_146294_l, parent.field_146295_m);
          this.parent=parent;
          this.mods=mods;
      }
-@@ -66,21 +75,53 @@
+@@ -66,21 +75,37 @@
          return (this.getSize()) * 35 + 1;
      }
  
@@ -49,7 +49,6 @@
          ModContainer mc=mods.get(listIndex);
 +        FontRenderer font = this.parent.getFontRenderer();
 +        CheckResult  vercheck = ForgeVersion.getResult(mc);
-+
          if (Loader.instance().getModState(mc)==ModState.DISABLED)
          {
              this.parent.getFontRenderer().func_78276_b(this.parent.getFontRenderer().func_78269_a(mc.getName(), listWidth - 10), this.left + 3 , var3 + 2, 0xFF2222);
@@ -64,21 +63,6 @@
 +            this.parent.getFontRenderer().func_78276_b(this.parent.getFontRenderer().func_78269_a(mc.getDisplayVersion(), listWidth - (5 + var4)), this.left + 3 , var3 + 12, 0xCCCCCC);
              this.parent.getFontRenderer().func_78276_b(this.parent.getFontRenderer().func_78269_a(mc.getMetadata() !=null ? mc.getMetadata().getChildModCountString() : "Metadata not found", listWidth - 10), this.left + 3 , var3 + 22, 0xCCCCCC);
 +
-+            /*
-+            switch(vercheck.status) //TODO: Change to icons?
-+            {
-+                case BETA_OUTDATED:
-+                case OUTDATED:
-+                    font.drawString("U", right - font.getCharWidth('U') - 1, top+var4-font.FONT_HEIGHT+2, 0x22FF22);
-+                    break;
-+                case AHEAD:
-+                case BETA:
-+                case FAILED:
-+                case PENDING:
-+                case UP_TO_DATE:
-+                    break;
-+            }
-+            */
 +            if (vercheck.status.shouldDraw())
 +            //TODO: Consider adding more icons for visualization
 +            Minecraft.func_71410_x().func_110434_K().func_110577_a(VERSION_CHECK_ICONS);

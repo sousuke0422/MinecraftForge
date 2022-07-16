@@ -10,12 +10,7 @@
  
  import org.apache.logging.log4j.Level;
  import org.lwjgl.opengl.GL11;
-@@ -86,14 +89,14 @@
-             mods.add(mod);
-         }
-     }
--
-     @SuppressWarnings("unchecked")
+@@ -91,9 +94,10 @@
      @Override
      public void func_73866_w_()
      {
@@ -27,16 +22,16 @@
          }
          listWidth=Math.min(listWidth, 150);
          this.field_146292_n.add(new GuiButton(6, this.field_146294_l / 2 - 75, this.field_146295_m - 38, I18n.func_135052_a("gui.done")));
-@@ -101,7 +104,7 @@
+@@ -101,7 +105,7 @@
          disableModButton = new GuiButton(21, 10, this.field_146295_m - 38, this.listWidth, 20, "Disable");
          this.field_146292_n.add(configModButton);
          this.field_146292_n.add(disableModButton);
 -        this.modList=new GuiSlotModList(this, mods, listWidth);
-+        this.modList=new GuiSlotModList(this, mods, listWidth, slotHeight);
++        this.modList = new GuiSlotModList(this, mods, listWidth, slotHeight);
          this.modList.registerScrollButtons(this.field_146292_n, 7, 8);
      }
  
-@@ -152,6 +155,7 @@
+@@ -152,6 +156,7 @@
                  configModButton.field_146124_l = false;
                  int shifty = 35;
                  String logoFile = selectedMod.getMetadata().logoFile;
@@ -44,7 +39,7 @@
                  if (!logoFile.isEmpty())
                  {
                      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-@@ -220,6 +224,9 @@
+@@ -220,6 +225,9 @@
                  shifty = drawLine(String.format("Authors: %s", selectedMod.getMetadata().getAuthorList()), offset, shifty);
                  shifty = drawLine(String.format("URL: %s", selectedMod.getMetadata().url), offset, shifty);
                  shifty = drawLine(selectedMod.getMetadata().childMods.isEmpty() ? "No child mods for this mod" : String.format("Child mods: %s", selectedMod.getMetadata().getChildModList()), offset, shifty);
@@ -54,7 +49,7 @@
                  int rightSide = this.field_146294_l - offset - 20;
                  if (rightSide > 20)
                  {
-@@ -257,11 +264,15 @@
+@@ -257,11 +265,15 @@
                  }
              } else {
                  offset = ( this.listWidth + this.field_146294_l ) / 2;
