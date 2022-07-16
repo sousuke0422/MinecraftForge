@@ -91,9 +91,10 @@ public class GuiModList extends GuiScreen
     @Override
     public void initGui()
     {
+        int slotHeight = 35;
         for (ModContainer mod : mods) {
             listWidth=Math.max(listWidth,getFontRenderer().getStringWidth(mod.getName()) + 10);
-            listWidth=Math.max(listWidth,getFontRenderer().getStringWidth(mod.getVersion()) + 10);
+            listWidth=Math.max(listWidth,getFontRenderer().getStringWidth(mod.getVersion()) + 5 + slotHeight);
         }
         listWidth=Math.min(listWidth, 150);
         this.buttonList.add(new GuiButton(6, this.width / 2 - 75, this.height - 38, I18n.format("gui.done")));
@@ -101,7 +102,7 @@ public class GuiModList extends GuiScreen
         disableModButton = new GuiButton(21, 10, this.height - 38, this.listWidth, 20, "Disable");
         this.buttonList.add(configModButton);
         this.buttonList.add(disableModButton);
-        this.modList=new GuiSlotModList(this, mods, listWidth);
+        this.modList = new GuiSlotModList(this, mods, listWidth, slotHeight);
         this.modList.registerScrollButtons(this.buttonList, 7, 8);
     }
 
@@ -260,8 +261,8 @@ public class GuiModList extends GuiScreen
                 this.drawCenteredString(this.fontRendererObj, selectedMod.getName(), offset, 35, 0xFFFFFF);
                 this.drawCenteredString(this.fontRendererObj, String.format("Version: %s",selectedMod.getVersion()), offset, 45, 0xFFFFFF);
                 this.drawCenteredString(this.fontRendererObj, String.format("Mod State: %s",Loader.instance().getModState(selectedMod)), offset, 55, 0xFFFFFF);
-                this.drawCenteredString(this.fontRendererObj, "No mod information found", offset, 65, 0xDDDDDD);
-                this.drawCenteredString(this.fontRendererObj, "Ask your mod author to provide a mod mcmod.info file", offset, 75, 0xDDDDDD);
+                this.drawCenteredString(this.fontRendererObj, "No mod information found", offset, 75, 0xDDDDDD);
+                this.drawCenteredString(this.fontRendererObj, "Ask your mod author to provide a mod mcmod.info file", offset, 85, 0xDDDDDD);
                 configModButton.visible = false;
                 disableModButton.visible = false;
             }

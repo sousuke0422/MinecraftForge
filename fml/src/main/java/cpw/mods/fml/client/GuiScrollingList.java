@@ -12,6 +12,7 @@
 
 package cpw.mods.fml.client;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -28,9 +29,11 @@ public abstract class GuiScrollingList
     private final Minecraft client;
     protected final int listWidth;
     protected final int listHeight;
+    protected final int screenWidth;
+    protected final int screenHeight;
     protected final int top;
     protected final int bottom;
-    private final int right;
+    protected final int right;
     protected final int left;
     protected final int slotHeight;
     private int scrollUpActionId;
@@ -40,13 +43,19 @@ public abstract class GuiScrollingList
     private float initialMouseClickY = -2.0F;
     private float scrollFactor;
     private float scrollDistance;
-    private int selectedIndex = -1;
+    protected int selectedIndex = -1;
     private long lastClickTime = 0L;
     private boolean field_25123_p = true;
     private boolean field_27262_q;
     private int field_27261_r;
 
+    @Deprecated // We need to know screen size.
     public GuiScrollingList(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight)
+    {
+       this(client, width, height, top, bottom, left, entryHeight, width, height);
+    }
+
+    public GuiScrollingList(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight)
     {
         this.client = client;
         this.listWidth = width;
@@ -56,6 +65,8 @@ public abstract class GuiScrollingList
         this.slotHeight = entryHeight;
         this.left = left;
         this.right = width + this.left;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
     }
 
     public void func_27258_a(boolean p_27258_1_)
@@ -450,5 +461,19 @@ public abstract class GuiScrollingList
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }
+
+    public void handleMouseInput(int mouseX, int mouseY)
+    {
+        boolean isHovering = mouseX >= this.left && mouseX <= this.left + this.listWidth &&
+                             mouseY >= this.top && mouseY <= this.bottom;
+        if (!isHovering)
+            return;
+
+        int scroll = Mouse.getEventDWheel();
+        if (scroll != 0)
+        {
+            this.scrollDistance += (float)((-1 * scroll / 120.0F) * this.slotHeight / 2);
+        }
     }
 }

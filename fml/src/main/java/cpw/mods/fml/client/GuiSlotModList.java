@@ -15,7 +15,7 @@ package cpw.mods.fml.client;
 import java.util.ArrayList;
 
 import net.minecraft.client.renderer.Tessellator;
-
+import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState.ModState;
 import cpw.mods.fml.common.ModContainer;
@@ -26,12 +26,14 @@ import cpw.mods.fml.common.ModContainer;
  */
 public class GuiSlotModList extends GuiScrollingList
 {
+    private static final ResourceLocation VERSION_CHECK_ICONS = new ResourceLocation("fml", "textures/gui/version_check_icons.png");
+
     private GuiModList parent;
     private ArrayList<ModContainer> mods;
 
-    public GuiSlotModList(GuiModList parent, ArrayList<ModContainer> mods, int listWidth)
+    public GuiSlotModList(GuiModList parent, ArrayList<ModContainer> mods, int listWidth, int slotHeight)
     {
-        super(parent.getMinecraftInstance(), listWidth, parent.height, 32, parent.height - 66 + 4, 10, 35);
+        super(parent.getMinecraftInstance(), listWidth, parent.height, 32, parent.height - 88 + 4, 10, slotHeight, parent.width, parent.height);
         this.parent=parent;
         this.mods=mods;
     }
@@ -66,6 +68,11 @@ public class GuiSlotModList extends GuiScrollingList
         return (this.getSize()) * 35 + 1;
     }
 
+    ArrayList<ModContainer> getMods()
+    {
+        return mods;
+    }
+
     @Override
     protected void drawSlot(int listIndex, int var2, int var3, int var4, Tessellator var5)
     {
@@ -73,13 +80,13 @@ public class GuiSlotModList extends GuiScrollingList
         if (Loader.instance().getModState(mc)==ModState.DISABLED)
         {
             this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth(mc.getName(), listWidth - 10), this.left + 3 , var3 + 2, 0xFF2222);
-            this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth(mc.getDisplayVersion(), listWidth - 10), this.left + 3 , var3 + 12, 0xFF2222);
+            this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth(mc.getDisplayVersion(), listWidth - (5 + var4)), this.left + 3 , var3 + 12, 0xFF2222);
             this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth("DISABLED", listWidth - 10), this.left + 3 , var3 + 22, 0xFF2222);
         }
         else
         {
             this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth(mc.getName(), listWidth - 10), this.left + 3 , var3 + 2, 0xFFFFFF);
-            this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth(mc.getDisplayVersion(), listWidth - 10), this.left + 3 , var3 + 12, 0xCCCCCC);
+            this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth(mc.getDisplayVersion(), listWidth - (5 + var4)), this.left + 3 , var3 + 12, 0xCCCCCC);
             this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth(mc.getMetadata() !=null ? mc.getMetadata().getChildModCountString() : "Metadata not found", listWidth - 10), this.left + 3 , var3 + 22, 0xCCCCCC);
         }
     }
