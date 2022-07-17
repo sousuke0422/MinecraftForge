@@ -1,6 +1,19 @@
 --- ../src-base/minecraft/cpw/mods/fml/client/GuiSlotModList.java
 +++ ../src-work/minecraft/cpw/mods/fml/client/GuiSlotModList.java
-@@ -14,8 +14,15 @@
+
+ /*
+  * Forge Mod Loader
+  * Copyright (c) 2012-2013 cpw.
+  * All rights reserved. This program and the accompanying materials
+  * are made available under the terms of the GNU Lesser Public License v2.1
+  * which accompanies this distribution, and is available at
+  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+  *
+  * Contributors:
+  *     cpw - implementation
+  */
+ 
+ package cpw.mods.fml.client;
  
  import java.util.ArrayList;
  
@@ -16,19 +29,78 @@
  import cpw.mods.fml.common.Loader;
  import cpw.mods.fml.common.LoaderState.ModState;
  import cpw.mods.fml.common.ModContainer;
-@@ -77,6 +84,8 @@
+ 
+ /**
+  * @author cpw
+  *
+  */
+ public class GuiSlotModList extends GuiScrollingList
+ {
+     private static final ResourceLocation VERSION_CHECK_ICONS = new ResourceLocation("fml", "textures/gui/version_check_icons.png");
+ 
+     private GuiModList parent;
+     private ArrayList<ModContainer> mods;
+ 
+     public GuiSlotModList(GuiModList parent, ArrayList<ModContainer> mods, int listWidth, int slotHeight)
+     {
+         super(parent.getMinecraftInstance(), listWidth, parent.field_146295_m, 32, parent.field_146295_m - 88 + 4, 10, slotHeight, parent.field_146294_l, parent.field_146295_m);
+         this.parent=parent;
+         this.mods=mods;
+     }
+ 
+     @Override
+     protected int getSize()
+     {
+         return mods.size();
+     }
+ 
+     @Override
+     protected void elementClicked(int var1, boolean var2)
+     {
+         this.parent.selectModIndex(var1);
+     }
+ 
+     @Override
+     protected boolean isSelected(int var1)
+     {
+         return this.parent.modIndexSelected(var1);
+     }
+ 
+     @Override
+     protected void drawBackground()
+     {
+         this.parent.func_146276_q_();
+     }
+ 
+     @Override
+     protected int getContentHeight()
+     {
+         return (this.getSize()) * 35 + 1;
+     }
+ 
+     ArrayList<ModContainer> getMods()
+     {
+         return mods;
+     }
+ 
+     @Override
      protected void drawSlot(int listIndex, int var2, int var3, int var4, Tessellator var5)
      {
          ModContainer mc=mods.get(listIndex);
+         if (Loader.instance().getModState(mc)==ModState.DISABLED)
 +        FontRenderer font = this.parent.getFontRenderer();
 +        CheckResult  vercheck = ForgeVersion.getResult(mc);
-         if (Loader.instance().getModState(mc)==ModState.DISABLED)
          {
              this.parent.getFontRenderer().func_78276_b(this.parent.getFontRenderer().func_78269_a(mc.getName(), listWidth - 10), this.left + 3 , var3 + 2, 0xFF2222);
-@@ -88,6 +97,17 @@
+             this.parent.getFontRenderer().func_78276_b(this.parent.getFontRenderer().func_78269_a(mc.getDisplayVersion(), listWidth - (5 + var4)), this.left + 3 , var3 + 12, 0xFF2222);
+             this.parent.getFontRenderer().func_78276_b(this.parent.getFontRenderer().func_78269_a("DISABLED", listWidth - 10), this.left + 3 , var3 + 22, 0xFF2222);
+         }
+         else
+         {
              this.parent.getFontRenderer().func_78276_b(this.parent.getFontRenderer().func_78269_a(mc.getName(), listWidth - 10), this.left + 3 , var3 + 2, 0xFFFFFF);
              this.parent.getFontRenderer().func_78276_b(this.parent.getFontRenderer().func_78269_a(mc.getDisplayVersion(), listWidth - (5 + var4)), this.left + 3 , var3 + 12, 0xCCCCCC);
              this.parent.getFontRenderer().func_78276_b(this.parent.getFontRenderer().func_78269_a(mc.getMetadata() !=null ? mc.getMetadata().getChildModCountString() : "Metadata not found", listWidth - 10), this.left + 3 , var3 + 22, 0xCCCCCC);
+         }
 +
 +            if (vercheck.status.shouldDraw())
 +            {
@@ -40,6 +112,6 @@
 +                Gui.func_146110_a(right - (var4 / 2 + 4), top + (var4 / 2 - 4), vercheck.status.getSheetOffset() * 8, (vercheck.status.isAnimated() && ((System.currentTimeMillis() / 800 & 1)) == 1) ? 8 : 0, 8, 8, 64, 16);
 +                GL11.glPopMatrix();
 +            }
-         }
      }
  
+ }
