@@ -1,6 +1,5 @@
 --- ../src-base/minecraft/cpw/mods/fml/client/GuiSlotModList.java
 +++ ../src-work/minecraft/cpw/mods/fml/client/GuiSlotModList.java
-
  /*
   * Forge Mod Loader
   * Copyright (c) 2012-2013 cpw.

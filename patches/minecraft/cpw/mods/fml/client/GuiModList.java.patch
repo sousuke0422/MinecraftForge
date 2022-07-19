@@ -1,6 +1,5 @@
 --- ../src-base/minecraft/cpw/mods/fml/client/GuiModList.java
 +++ ../src-work/minecraft/cpw/mods/fml/client/GuiModList.java
-
  /*
   * The FML Forge Mod Loader suite.
   * Copyright (C) 2012 cpw
