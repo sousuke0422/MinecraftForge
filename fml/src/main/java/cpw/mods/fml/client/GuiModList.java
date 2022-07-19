@@ -32,6 +32,11 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.util.ResourceLocation;
+/*
+import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.common.ForgeVersion.CheckResult;
+import net.minecraftforge.common.ForgeVersion.Status;
+*/
 
 import org.apache.logging.log4j.Level;
 import org.lwjgl.opengl.GL11;
@@ -153,6 +158,9 @@ public class GuiModList extends GuiScreen
                 configModButton.enabled = false;
                 int shifty = 35;
                 String logoFile = selectedMod.getMetadata().logoFile;
+                /*
+                CheckResult vercheck = ForgeVersion.getResult(selectedMod);
+                */
                 if (!logoFile.isEmpty())
                 {
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -221,6 +229,11 @@ public class GuiModList extends GuiScreen
                 shifty = drawLine(String.format("Authors: %s", selectedMod.getMetadata().getAuthorList()), offset, shifty);
                 shifty = drawLine(String.format("URL: %s", selectedMod.getMetadata().url), offset, shifty);
                 shifty = drawLine(selectedMod.getMetadata().childMods.isEmpty() ? "No child mods for this mod" : String.format("Child mods: %s", selectedMod.getMetadata().getChildModList()), offset, shifty);
+                /*
+                if (vercheck.status == Status.OUTDATED || vercheck.status == Status.BETA_OUTDATED) {
+                    shifty = drawLine(String.format("Update Available: %s", (vercheck.url == null ? "" : vercheck.url)), offset, shifty);
+                }
+                */
                 int rightSide = this.width - offset - 20;
                 if (rightSide > 20)
                 {
@@ -258,9 +271,17 @@ public class GuiModList extends GuiScreen
                 }
             } else {
                 offset = ( this.listWidth + this.width ) / 2;
+                /*
+                CheckResult vercheck = ForgeVersion.getResult(selectedMod);
+                */
                 this.drawCenteredString(this.fontRendererObj, selectedMod.getName(), offset, 35, 0xFFFFFF);
                 this.drawCenteredString(this.fontRendererObj, String.format("Version: %s",selectedMod.getVersion()), offset, 45, 0xFFFFFF);
                 this.drawCenteredString(this.fontRendererObj, String.format("Mod State: %s",Loader.instance().getModState(selectedMod)), offset, 55, 0xFFFFFF);
+                /*
+                if (vercheck.status == Status.OUTDATED || vercheck.status == Status.BETA_OUTDATED) {
+                    this.drawCenteredString(this.fontRendererObj, String.format("Update Available: %s", (vercheck.url == null ? "" : vercheck.url)), offset, 65, 0xFFFFFF);
+                }
+                */
                 this.drawCenteredString(this.fontRendererObj, "No mod information found", offset, 75, 0xDDDDDD);
                 this.drawCenteredString(this.fontRendererObj, "Ask your mod author to provide a mod mcmod.info file", offset, 85, 0xDDDDDD);
                 configModButton.visible = false;

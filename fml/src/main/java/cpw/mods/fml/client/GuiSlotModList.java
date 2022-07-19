@@ -14,6 +14,11 @@ package cpw.mods.fml.client;
 
 import java.util.ArrayList;
 
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.common.Loader;
@@ -77,6 +82,10 @@ public class GuiSlotModList extends GuiScrollingList
     protected void drawSlot(int listIndex, int var2, int var3, int var4, Tessellator var5)
     {
         ModContainer mc=mods.get(listIndex);
+        FontRenderer font = this.parent.getFontRenderer();
+        /*
+        CheckResult  vercheck = ForgeVersion.getResult(mc);
+        */
         if (Loader.instance().getModState(mc)==ModState.DISABLED)
         {
             this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth(mc.getName(), listWidth - 10), this.left + 3 , var3 + 2, 0xFF2222);
@@ -88,6 +97,19 @@ public class GuiSlotModList extends GuiScrollingList
             this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth(mc.getName(), listWidth - 10), this.left + 3 , var3 + 2, 0xFFFFFF);
             this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth(mc.getDisplayVersion(), listWidth - (5 + var4)), this.left + 3 , var3 + 12, 0xCCCCCC);
             this.parent.getFontRenderer().drawString(this.parent.getFontRenderer().trimStringToWidth(mc.getMetadata() !=null ? mc.getMetadata().getChildModCountString() : "Metadata not found", listWidth - 10), this.left + 3 , var3 + 22, 0xCCCCCC);
+
+            /*
+            if (vercheck.status.shouldDraw())
+            {
+                //TODO: Consider adding more icons for visualization
+                Minecraft.getMinecraft().getTextureManager().bindTexture(VERSION_CHECK_ICONS);
+                GL11.glClearColor(1, 1, 1, 1);
+                GL11.glPushMatrix();
+                // func_146110_a = drawModalRectWithCustomSizedTexture
+                Gui.func_146110_a(right - (var4 / 2 + 4), top + (var4 / 2 - 4), vercheck.status.getSheetOffset() * 8, (vercheck.status.isAnimated() && ((System.currentTimeMillis() / 800 & 1)) == 1) ? 8 : 0, 8, 8, 64, 16);
+                GL11.glPopMatrix();
+            }
+            */
         }
     }
 
