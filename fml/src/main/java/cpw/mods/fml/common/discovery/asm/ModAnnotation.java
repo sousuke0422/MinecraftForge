@@ -38,6 +38,16 @@ public class ModAnnotation
             this.value = value;
         }
 
+        public String getDesc()
+        {
+            return desc;
+        }
+
+        public String getValue()
+        {
+            return value;
+        }
+
     }
     AnnotationType type;
     Type asmType;
