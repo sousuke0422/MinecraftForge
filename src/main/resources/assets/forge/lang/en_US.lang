@@ -18,6 +18,7 @@ forge.configgui.ctgy.forgeChunkLoadingModConfig.tooltip=This is where you can de
 forge.configgui.ctgy.forgeChunkLoadingModConfig=Mod Overrides
 forge.configgui.ctgy.forgeChunkLoadingAddModConfig.tooltip=Allows you to define mod-specific settings that will override the defaults. A value of zero in either entry effectively disables any chunkloading capabilities for that mod.
 forge.configgui.ctgy.forgeChunkLoadingAddModConfig=+ Add New Mod Override
+forge.configgui.ctgy.VersionCheckConfig=Version Check Config
 
 forge.configgui.biomeSkyBlendRange.tooltip=Control the range of sky blending for colored skies in biomes.
 forge.configgui.biomeSkyBlendRange=Biome Sky Blend Range
