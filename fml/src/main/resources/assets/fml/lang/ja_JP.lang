@@ -82,10 +82,12 @@ fml.configgui.tooltip.undoChanges=変更を元に戻す
 fml.configgui.tooltip.default=[初期値：%s]
 fml.configgui.tooltip.defaultNumeric=[範囲：%s ～ %s, 初期値：%s]
 
+fml.menu.mods.normal=通常
+fml.menu.mods.search=検索:
+
 fml.messages.mod.missing.dependencies=現在の環境に依存する %s の Mod が導入されていません。
 fml.messages.mod.missing.dependencies.fix=以下の Mod を導入するか、%s の Mod を外してください。
 fml.messages.mod.missing.dependencies.see.log=技術的な情報については、「%s」を参照してください。
-
 fml.messages.version.restriction.any=任意
 fml.messages.version.restriction.lower.inclusive=%s 以降
 fml.messages.version.restriction.lower.exclusive=%s より上
