@@ -19,26 +19,35 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.event.ClickEvent;
 import net.minecraft.util.ResourceLocation;
 /*
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.ForgeVersion.CheckResult;
 import net.minecraftforge.common.ForgeVersion.Status;
 */
+import net.minecraft.util.StringUtils;
 
 import org.apache.logging.log4j.Level;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.base.Strings;
@@ -54,6 +63,43 @@ import cpw.mods.fml.common.ModContainer.Disableable;
  */
 public class GuiModList extends GuiScreen
 {
+    private enum SortType implements Comparator<ModContainer>
+    {
+        NORMAL(24),
+        A_TO_Z(25){ @Override protected int compare(String name1, String name2){ return name1.compareTo(name2); }},
+        Z_TO_A(26){ @Override protected int compare(String name1, String name2){ return name2.compareTo(name1); }};
+
+        private int buttonID;
+
+        private SortType(int buttonID)
+        {
+            this.buttonID = buttonID;
+        }
+
+        @Nullable
+        public static SortType getTypeForButton(GuiButton button)
+        {
+            for (SortType t : values())
+            {
+                if (t.buttonID == button.id)
+                {
+                    return t;
+                }
+            }
+            return null;
+        }
+
+        protected int compare(String name1, String name2){ return 0; }
+
+        @Override
+        public int compare(ModContainer o1, ModContainer o2)
+        {
+            String name1 = StringUtils.stripControlCodes(o1.getName()).toLowerCase();
+            String name2 = StringUtils.stripControlCodes(o2.getName()).toLowerCase();
+            return compare(name1, name2);
+        }
+    }
+
     private GuiScreen mainMenu;
     private GuiSlotModList modList;
     private int selected = -1;
@@ -64,6 +110,15 @@ public class GuiModList extends GuiScreen
     private GuiButton disableModButton;
     private ResourceLocation cachedLogo;
     private Dimension cachedLogoDimensions;
+
+    private int buttonMargin = 1;
+    private int numButtons = SortType.values().length;
+
+    private String lastFilterText = "";
+
+    private GuiTextField search;
+    private boolean sorted = false;
+    private SortType sortType = SortType.NORMAL;
 
     /**
      * @param mainMenu
@@ -103,35 +158,122 @@ public class GuiModList extends GuiScreen
         }
         listWidth=Math.min(listWidth, 150);
         this.buttonList.add(new GuiButton(6, this.width / 2 - 75, this.height - 38, I18n.format("gui.done")));
-        configModButton = new GuiButton(20, 10, this.height - 60, this.listWidth, 20, "Config");
-        disableModButton = new GuiButton(21, 10, this.height - 38, this.listWidth, 20, "Disable");
+        configModButton = new GuiButton(20, 10, this.height - 49, this.listWidth, 20, "Config");
+        disableModButton = new GuiButton(21, 10, this.height - 27, this.listWidth, 20, "Disable");
         this.buttonList.add(configModButton);
         this.buttonList.add(disableModButton);
         this.modList = new GuiSlotModList(this, mods, listWidth, slotHeight);
         this.modList.registerScrollButtons(this.buttonList, 7, 8);
+
+        search = new GuiTextField(getFontRenderer(), 12, modList.bottom + 17, modList.listWidth - 4, 14);
+        search.setFocused(true);
+        search.setCanLoseFocus(true);
+
+        int width = (modList.listWidth / numButtons);
+        int x = 10, y = 10;
+        GuiButton normalSort = new GuiButton(SortType.NORMAL.buttonID, x, y, width - buttonMargin, 20, I18n.format("fml.menu.mods.normal"));
+        normalSort.enabled = false;
+        buttonList.add(normalSort);
+        x += width + buttonMargin;
+        buttonList.add(new GuiButton(SortType.A_TO_Z.buttonID, x, y, width - buttonMargin, 20, "A-Z"));
+        x += width + buttonMargin;
+        buttonList.add(new GuiButton(SortType.Z_TO_A.buttonID, x, y, width - buttonMargin, 20, "Z-A"));
+    }
+
+    @Override
+    protected void mouseClicked(int x, int y, int button)
+    {
+        super.mouseClicked(x, y, button);
+        search.mouseClicked(x, y, button);
+        if (button == 1 && x >= search.xPosition && x < search.xPosition + search.width && y >= search.yPosition && y < search.yPosition + search.height) {
+            search.setText("");
+        }
+    }
+
+    @Override
+    protected void keyTyped(char c, int keyCode)
+    {
+        super.keyTyped(c, keyCode);
+        search.textboxKeyTyped(c, keyCode);
+    }
+
+    @Override
+    public void updateScreen()
+    {
+        super.updateScreen();
+        search.updateCursorCounter();
+
+        if (!search.getText().equals(lastFilterText))
+        {
+            reloadMods();
+            sorted = false;
+        }
+
+        if (!sorted)
+        {
+            reloadMods();
+            Collections.sort(mods, sortType);
+            selected = modList.selectedIndex = mods.indexOf(selectedMod);
+            sorted = true;
+        }
+    }
+
+    private void reloadMods()
+    {
+        ArrayList<ModContainer> mods = modList.getMods();
+        mods.clear();
+        for (ModContainer m : Loader.instance().getActiveModList())
+        {
+            // If it passes the filter, and is not a child mod
+            if (m.getName().toLowerCase().contains(search.getText().toLowerCase()) && m.getMetadata().parentMod == null)
+            {
+                mods.add(m);
+            }
+        }
+        this.mods = mods;
+        lastFilterText = search.getText();
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.enabled)
         {
-            switch (button.id)
+            SortType type = SortType.getTypeForButton(button);
+
+            if (type != null)
             {
-                case 6:
-                    this.mc.displayGuiScreen(this.mainMenu);
-                    return;
-                case 20:
-                    try
+                for (GuiButton b : (List<GuiButton>) buttonList)
+                {
+                    if (SortType.getTypeForButton(b) != null)
                     {
-                        IModGuiFactory guiFactory = FMLClientHandler.instance().getGuiFactoryFor(selectedMod);
-                        GuiScreen newScreen = guiFactory.mainConfigGuiClass().getConstructor(GuiScreen.class).newInstance(this);
-                        this.mc.displayGuiScreen(newScreen);
+                        b.enabled = true;
                     }
-                    catch (Exception e)
-                    {
-                        FMLLog.log(Level.ERROR, e, "There was a critical issue trying to build the config GUI for %s", selectedMod.getModId());
-                    }
-                    return;
+                }
+                button.enabled = false;
+                sorted = false;
+                sortType = type;
+                this.mods = modList.getMods();
+            }
+            else
+            {
+                switch (button.id)
+                {
+                    case 6:
+                        this.mc.displayGuiScreen(this.mainMenu);
+                        return;
+                    case 20:
+                        try
+                        {
+                            IModGuiFactory guiFactory = FMLClientHandler.instance().getGuiFactoryFor(selectedMod);
+                            GuiScreen newScreen = guiFactory.mainConfigGuiClass().getConstructor(GuiScreen.class).newInstance(this);
+                            this.mc.displayGuiScreen(newScreen);
+                        }
+                        catch (Exception e)
+                        {
+                            FMLLog.log(Level.ERROR, e, "There was a critical issue trying to build the config GUI for %s", selectedMod.getModId());
+                        }
+                        return;
+                }
             }
         }
         super.actionPerformed(button);
@@ -148,6 +290,14 @@ public class GuiModList extends GuiScreen
     {
         this.modList.drawScreen(p_571_1_, p_571_2_, p_571_3_);
         this.drawCenteredString(this.fontRendererObj, "Mod List", this.width / 2, 16, 0xFFFFFF);
+        //int left = ((this.width - this.listWidth - 38) / 2) + this.listWidth + 30;
+        //this.drawCenteredString(this.fontRendererObj, "Mod List", left, 16, 0xFFFFFF);
+
+        String text = I18n.format("fml.menu.mods.search");
+        int x = ((10 + modList.right) / 2) - (getFontRenderer().getStringWidth(text) / 2);
+        getFontRenderer().drawString(text, x, modList.bottom + 5, 0xFFFFFF);
+        search.drawTextBox();
+
         int offset = this.listWidth  + 20;
         if (selectedMod != null) {
             GL11.glEnable(GL11.GL_BLEND);
@@ -230,9 +380,8 @@ public class GuiModList extends GuiScreen
                 shifty = drawLine(String.format("URL: %s", selectedMod.getMetadata().url), offset, shifty);
                 shifty = drawLine(selectedMod.getMetadata().childMods.isEmpty() ? "No child mods for this mod" : String.format("Child mods: %s", selectedMod.getMetadata().getChildModList()), offset, shifty);
                 /*
-                if (vercheck.status == Status.OUTDATED || vercheck.status == Status.BETA_OUTDATED) {
+                if (vercheck.status == Status.OUTDATED || vercheck.status == Status.BETA_OUTDATED)
                     shifty = drawLine(String.format("Update Available: %s", (vercheck.url == null ? "" : vercheck.url)), offset, shifty);
-                }
                 */
                 int rightSide = this.width - offset - 20;
                 if (rightSide > 20)
@@ -278,9 +427,8 @@ public class GuiModList extends GuiScreen
                 this.drawCenteredString(this.fontRendererObj, String.format("Version: %s",selectedMod.getVersion()), offset, 45, 0xFFFFFF);
                 this.drawCenteredString(this.fontRendererObj, String.format("Mod State: %s",Loader.instance().getModState(selectedMod)), offset, 55, 0xFFFFFF);
                 /*
-                if (vercheck.status == Status.OUTDATED || vercheck.status == Status.BETA_OUTDATED) {
+                if (vercheck.status == Status.OUTDATED || vercheck.status == Status.BETA_OUTDATED)
                     this.drawCenteredString(this.fontRendererObj, String.format("Update Available: %s", (vercheck.url == null ? "" : vercheck.url)), offset, 65, 0xFFFFFF);
-                }
                 */
                 this.drawCenteredString(this.fontRendererObj, "No mod information found", offset, 75, 0xDDDDDD);
                 this.drawCenteredString(this.fontRendererObj, "Ask your mod author to provide a mod mcmod.info file", offset, 85, 0xDDDDDD);

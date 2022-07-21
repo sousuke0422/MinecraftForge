@@ -1,18 +1,19 @@
 --- ../src-base/minecraft/cpw/mods/fml/client/GuiModList.java
 +++ ../src-work/minecraft/cpw/mods/fml/client/GuiModList.java
-@@ -32,11 +32,9 @@
- import net.minecraft.client.resources.I18n;
+@@ -39,12 +39,9 @@
  import net.minecraft.client.resources.IResourcePack;
+ import net.minecraft.event.ClickEvent;
  import net.minecraft.util.ResourceLocation;
+-import net.minecraft.util.StringUtils;
 -/*
  import net.minecraftforge.common.ForgeVersion;
  import net.minecraftforge.common.ForgeVersion.CheckResult;
  import net.minecraftforge.common.ForgeVersion.Status;
 -*/
+ import net.minecraft.util.StringUtils;
  
  import org.apache.logging.log4j.Level;
- import org.lwjgl.opengl.GL11;
-@@ -158,9 +156,7 @@
+@@ -309,9 +306,7 @@
                  configModButton.field_146124_l = false;
                  int shifty = 35;
                  String logoFile = selectedMod.getMetadata().logoFile;
@@ -22,19 +23,18 @@
                  if (!logoFile.isEmpty())
                  {
                      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-@@ -229,11 +225,9 @@
+@@ -380,10 +375,8 @@
                  shifty = drawLine(String.format("Authors: %s", selectedMod.getMetadata().getAuthorList()), offset, shifty);
                  shifty = drawLine(String.format("URL: %s", selectedMod.getMetadata().url), offset, shifty);
                  shifty = drawLine(selectedMod.getMetadata().childMods.isEmpty() ? "No child mods for this mod" : String.format("Child mods: %s", selectedMod.getMetadata().getChildModList()), offset, shifty);
 -                /*
-                 if (vercheck.status == Status.OUTDATED || vercheck.status == Status.BETA_OUTDATED) {
+                 if (vercheck.status == Status.OUTDATED || vercheck.status == Status.BETA_OUTDATED)
                      shifty = drawLine(String.format("Update Available: %s", (vercheck.url == null ? "" : vercheck.url)), offset, shifty);
-                 }
 -                */
                  int rightSide = this.field_146294_l - offset - 20;
                  if (rightSide > 20)
                  {
-@@ -271,17 +265,13 @@
+@@ -421,16 +414,12 @@
                  }
              } else {
                  offset = ( this.listWidth + this.field_146294_l ) / 2;
@@ -45,11 +45,10 @@
                  this.func_73732_a(this.field_146289_q, String.format("Version: %s",selectedMod.getVersion()), offset, 45, 0xFFFFFF);
                  this.func_73732_a(this.field_146289_q, String.format("Mod State: %s",Loader.instance().getModState(selectedMod)), offset, 55, 0xFFFFFF);
 -                /*
-                 if (vercheck.status == Status.OUTDATED || vercheck.status == Status.BETA_OUTDATED) {
+                 if (vercheck.status == Status.OUTDATED || vercheck.status == Status.BETA_OUTDATED)
 -                    this.drawCenteredString(this.fontRendererObj, String.format("Update Available: %s", (vercheck.url == null ? "" : vercheck.url)), offset, 65, 0xFFFFFF);
-+                    this.func_73732_a(this.field_146289_q, String.format("Update Available: %s", (vercheck.url == null ? "" : vercheck.url)), offset, 65, 0xFFFFFF);
-                 }
 -                */
++                    this.func_73732_a(this.field_146289_q, String.format("Update Available: %s", (vercheck.url == null ? "" : vercheck.url)), offset, 65, 0xFFFFFF);
                  this.func_73732_a(this.field_146289_q, "No mod information found", offset, 75, 0xDDDDDD);
                  this.func_73732_a(this.field_146289_q, "Ask your mod author to provide a mod mcmod.info file", offset, 85, 0xDDDDDD);
                  configModButton.field_146125_m = false;
