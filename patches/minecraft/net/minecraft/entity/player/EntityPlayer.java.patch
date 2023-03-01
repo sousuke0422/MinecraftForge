@@ -1,6 +1,12 @@
 --- ../src-base/minecraft/net/minecraft/entity/player/EntityPlayer.java
 +++ ../src-work/minecraft/net/minecraft/entity/player/EntityPlayer.java
-@@ -8,9 +8,12 @@
+@@ -2,12 +2,18 @@
+ 
+ import com.google.common.base.Charsets;
+ import com.mojang.authlib.GameProfile;
++
++import cpw.mods.fml.common.FMLCommonHandler;
++import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
  import cpw.mods.fml.relauncher.Side;
  import cpw.mods.fml.relauncher.SideOnly;
  import java.util.Collection;
@@ -13,7 +19,7 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockBed;
  import net.minecraft.block.material.Material;
-@@ -77,8 +80,24 @@
+@@ -74,8 +80,24 @@
  import net.minecraft.world.WorldSettings;
  import net.minecraft.world.chunk.IChunkProvider;
  
@@ -38,7 +44,7 @@
      public InventoryPlayer field_71071_by = new InventoryPlayer(this);
      private InventoryEnderChest field_71078_a = new InventoryEnderChest();
      public Container field_71069_bz;
-@@ -129,6 +148,7 @@
+@@ -126,6 +148,7 @@
          this.func_70012_b((double)chunkcoordinates.field_71574_a + 0.5D, (double)(chunkcoordinates.field_71572_b + 1), (double)chunkcoordinates.field_71573_c + 0.5D, 0.0F, 0.0F);
          this.field_70741_aB = 180.0F;
          this.field_70174_ab = 20;
@@ -46,7 +52,7 @@
      }
  
      protected void func_110147_ax()
-@@ -172,7 +192,8 @@
+@@ -169,7 +192,8 @@
      {
          if (this.field_71074_e != null)
          {
@@ -56,7 +62,14 @@
          }
  
          this.func_71041_bz();
-@@ -203,14 +224,23 @@
+@@ -193,20 +217,30 @@
+ 
+     public void func_70071_h_()
+     {
++        FMLCommonHandler.instance().onPlayerPreTick(this);
+         if (this.field_71074_e != null)
+         {
+             ItemStack itemstack = this.field_71071_by.func_70448_g();
  
              if (itemstack == this.field_71074_e)
              {
@@ -85,7 +98,7 @@
                  }
              }
              else
-@@ -257,7 +287,7 @@
+@@ -253,7 +287,7 @@
  
          super.func_70071_h_();
  
@@ -94,7 +107,15 @@
          {
              this.func_71053_j();
              this.field_71070_bA = this.field_71069_bz;
-@@ -388,11 +418,13 @@
+@@ -316,6 +350,7 @@
+             this.field_71100_bB.func_75118_a(this);
+             this.func_71064_a(StatList.field_75948_k, 1);
+         }
++        FMLCommonHandler.instance().onPlayerPostTick(this);
+     }
+ 
+     public int func_82145_z()
+@@ -383,11 +418,13 @@
              int i = this.field_71074_e.field_77994_a;
              ItemStack itemstack = this.field_71074_e.func_77950_b(this.field_70170_p, this);
  
@@ -109,7 +130,7 @@
                  {
                      this.field_71071_by.field_70462_a[this.field_71071_by.field_70461_c] = null;
                  }
-@@ -466,11 +498,11 @@
+@@ -461,11 +498,11 @@
              this.field_71109_bG = 0.0F;
              this.func_71015_k(this.field_70165_t - d0, this.field_70163_u - d1, this.field_70161_v - d2);
  
@@ -123,7 +144,7 @@
              }
          }
      }
-@@ -595,11 +627,15 @@
+@@ -590,11 +627,15 @@
  
      public void func_70645_a(DamageSource p_70645_1_)
      {
@@ -139,7 +160,7 @@
          if (this.func_70005_c_().equals("Notch"))
          {
              this.func_146097_a(new ItemStack(Items.field_151034_e, 1), true, false);
-@@ -610,6 +646,20 @@
+@@ -605,6 +646,20 @@
              this.field_71071_by.func_70436_m();
          }
  
@@ -160,7 +181,7 @@
          if (p_70645_1_ != null)
          {
              this.field_70159_w = (double)(-MathHelper.func_76134_b((this.field_70739_aP + this.field_70177_z) * (float)Math.PI / 180.0F) * 0.1F);
-@@ -661,12 +711,25 @@
+@@ -656,12 +711,25 @@
  
      public EntityItem func_71040_bB(boolean p_71040_1_)
      {
@@ -188,7 +209,7 @@
      }
  
      public EntityItem func_146097_a(ItemStack p_146097_1_, boolean p_146097_2_, boolean p_146097_3_)
-@@ -722,13 +785,31 @@
+@@ -717,13 +785,31 @@
  
      public void func_71012_a(EntityItem p_71012_1_)
      {
@@ -221,7 +242,7 @@
          if (f > 1.0F)
          {
              int i = EnchantmentHelper.func_77509_b(this);
-@@ -738,7 +819,9 @@
+@@ -733,7 +819,9 @@
              {
                  float f1 = (float)(i * i + 1);
  
@@ -232,7 +253,7 @@
                  {
                      f += f1 * 0.08F;
                  }
-@@ -769,12 +852,13 @@
+@@ -764,12 +852,13 @@
              f /= 5.0F;
          }
  
@@ -248,7 +269,7 @@
      }
  
      public void func_70037_a(NBTTagCompound p_70037_1_)
-@@ -803,6 +887,16 @@
+@@ -798,6 +887,16 @@
              this.field_82248_d = p_70037_1_.func_74767_n("SpawnForced");
          }
  
@@ -265,7 +286,7 @@
          this.field_71100_bB.func_75112_a(p_70037_1_);
          this.field_71075_bZ.func_75095_b(p_70037_1_);
  
-@@ -833,6 +927,23 @@
+@@ -828,6 +927,23 @@
              p_70014_1_.func_74757_a("SpawnForced", this.field_82248_d);
          }
  
@@ -289,7 +310,7 @@
          this.field_71100_bB.func_75117_b(p_70014_1_);
          this.field_71075_bZ.func_75091_a(p_70014_1_);
          p_70014_1_.func_74782_a("EnderItems", this.field_71078_a.func_70487_g());
-@@ -854,7 +965,7 @@
+@@ -849,7 +965,7 @@
  
      public float func_70047_e()
      {
@@ -298,7 +319,7 @@
      }
  
      protected void func_71061_d_()
-@@ -864,6 +975,7 @@
+@@ -859,6 +975,7 @@
  
      public boolean func_70097_a(DamageSource p_70097_1_, float p_70097_2_)
      {
@@ -306,7 +327,7 @@
          if (this.func_85032_ar())
          {
              return false;
-@@ -965,12 +1077,15 @@
+@@ -960,12 +1077,15 @@
      {
          if (!this.func_85032_ar())
          {
@@ -323,7 +344,7 @@
              p_70665_2_ = this.func_70672_c(p_70665_1_, p_70665_2_);
              float f1 = p_70665_2_;
              p_70665_2_ = Math.max(p_70665_2_ - this.func_110139_bj(), 0.0F);
-@@ -1004,6 +1119,7 @@
+@@ -999,6 +1119,7 @@
  
      public boolean func_70998_m(Entity p_70998_1_)
      {
@@ -331,7 +352,7 @@
          ItemStack itemstack = this.func_71045_bC();
          ItemStack itemstack1 = itemstack != null ? itemstack.func_77946_l() : null;
  
-@@ -1054,7 +1170,9 @@
+@@ -1049,7 +1170,9 @@
  
      public void func_71028_bD()
      {
@@ -341,7 +362,7 @@
      }
  
      public double func_70033_W()
-@@ -1064,6 +1182,15 @@
+@@ -1059,6 +1182,15 @@
  
      public void func_71059_n(Entity p_71059_1_)
      {
@@ -357,7 +378,7 @@
          if (p_71059_1_.func_70075_an())
          {
              if (!p_71059_1_.func_85031_j(this))
-@@ -1211,6 +1338,12 @@
+@@ -1206,6 +1338,12 @@
  
      public EntityPlayer.EnumStatus func_71018_a(int p_71018_1_, int p_71018_2_, int p_71018_3_)
      {
@@ -370,7 +391,7 @@
          if (!this.field_70170_p.field_72995_K)
          {
              if (this.func_70608_bn() || !this.func_70089_S())
-@@ -1253,8 +1386,7 @@
+@@ -1248,8 +1386,7 @@
  
          if (this.field_70170_p.func_72899_e(p_71018_1_, p_71018_2_, p_71018_3_))
          {
@@ -380,7 +401,7 @@
              float f1 = 0.5F;
              float f = 0.5F;
  
-@@ -1317,15 +1449,17 @@
+@@ -1312,15 +1449,17 @@
  
      public void func_70999_a(boolean p_70999_1_, boolean p_70999_2_, boolean p_70999_3_)
      {
@@ -401,7 +422,7 @@
  
              if (chunkcoordinates1 == null)
              {
-@@ -1359,7 +1493,7 @@
+@@ -1354,7 +1493,7 @@
  
      private boolean func_71065_l()
      {
@@ -410,7 +431,7 @@
      }
  
      public static ChunkCoordinates func_71056_a(World p_71056_0_, ChunkCoordinates p_71056_1_, boolean p_71056_2_)
-@@ -1370,9 +1504,9 @@
+@@ -1365,9 +1504,9 @@
          ichunkprovider.func_73158_c(p_71056_1_.field_71574_a - 3 >> 4, p_71056_1_.field_71573_c + 3 >> 4);
          ichunkprovider.func_73158_c(p_71056_1_.field_71574_a + 3 >> 4, p_71056_1_.field_71573_c + 3 >> 4);
  
@@ -422,7 +443,7 @@
              return chunkcoordinates1;
          }
          else
-@@ -1390,8 +1524,10 @@
+@@ -1385,8 +1524,10 @@
      {
          if (this.field_71081_bT != null)
          {
@@ -435,7 +456,7 @@
  
              switch (j)
              {
-@@ -1447,18 +1583,25 @@
+@@ -1442,18 +1583,25 @@
  
      public void func_146105_b(IChatComponent p_146105_1_) {}
  
@@ -463,7 +484,7 @@
          if (p_71063_1_ != null)
          {
              this.field_71077_c = new ChunkCoordinates(p_71063_1_);
-@@ -1632,6 +1775,10 @@
+@@ -1627,6 +1775,10 @@
  
              super.func_70069_a(p_70069_1_);
          }
@@ -474,7 +495,7 @@
      }
  
      protected String func_146067_o(int p_146067_1_)
-@@ -1674,11 +1821,6 @@
+@@ -1669,11 +1821,6 @@
          }
          else
          {
@@ -486,7 +507,7 @@
              if (this.field_71074_e != null && p_70620_1_.func_77973_b() == Items.field_151031_f)
              {
                  int j = p_70620_1_.func_77988_m() - this.field_71072_f;
-@@ -1698,6 +1840,7 @@
+@@ -1693,6 +1840,7 @@
                      return Items.field_151031_f.func_94599_c(0);
                  }
              }
@@ -494,7 +515,7 @@
          }
  
          return iicon;
-@@ -1781,6 +1924,8 @@
+@@ -1776,6 +1924,8 @@
      {
          if (p_71008_1_ != this.field_71074_e)
          {
@@ -503,7 +524,7 @@
              this.field_71074_e = p_71008_1_;
              this.field_71072_f = p_71008_2_;
  
-@@ -1864,6 +2009,10 @@
+@@ -1859,6 +2009,10 @@
              this.field_71106_cc = p_71049_1_.field_71106_cc;
              this.func_85040_s(p_71049_1_.func_71037_bA());
              this.field_82152_aq = p_71049_1_.field_82152_aq;
@@ -514,7 +535,7 @@
          }
          else if (this.field_70170_p.func_82736_K().func_82766_b("keepInventory"))
          {
-@@ -1875,6 +2024,18 @@
+@@ -1870,6 +2024,18 @@
          }
  
          this.field_71078_a = p_71049_1_.field_71078_a;
@@ -533,7 +554,7 @@
      }
  
      protected boolean func_70041_e_()
-@@ -1913,7 +2074,14 @@
+@@ -1908,7 +2074,14 @@
  
      public void func_70062_b(int p_70062_1_, ItemStack p_70062_2_)
      {
@@ -549,7 +570,7 @@
      }
  
      @SideOnly(Side.CLIENT)
-@@ -1958,7 +2126,7 @@
+@@ -1953,7 +2126,7 @@
  
      public IChatComponent func_145748_c_()
      {
@@ -558,10 +579,15 @@
          chatcomponenttext.func_150256_b().func_150241_a(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + this.func_70005_c_() + " "));
          return chatcomponenttext;
      }
-@@ -2041,6 +2209,118 @@
-         FMLNetworkHandler.openGui(this, mod, modGuiId, world, x, y, z);
+@@ -2031,6 +2204,123 @@
+         }
      }
  
++    public void openGui(Object mod, int modGuiId, World world, int x, int y, int z)
++    {
++        FMLNetworkHandler.openGui(this, mod, modGuiId, world, x, y, z);
++    }
++
 +    /* ======================================== FORGE START =====================================*/
 +    @SideOnly(Side.CLIENT)
 +    @Override

@@ -1,7 +1,9 @@
 --- ../src-base/minecraft/net/minecraft/block/Block.java
 +++ ../src-work/minecraft/net/minecraft/block/Block.java
-@@ -3,24 +3,36 @@
- import cpw.mods.fml.common.registry.GameData;
+@@ -1,25 +1,38 @@
+ package net.minecraft.block;
+ 
++import cpw.mods.fml.common.registry.GameData;
  import cpw.mods.fml.relauncher.Side;
  import cpw.mods.fml.relauncher.SideOnly;
 +
@@ -37,7 +39,7 @@
  import net.minecraft.util.IIcon;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.util.RegistryNamespaced;
-@@ -30,6 +42,15 @@
+@@ -29,10 +42,19 @@
  import net.minecraft.world.Explosion;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
@@ -53,7 +55,21 @@
  
  public class Block
  {
-@@ -112,7 +133,8 @@
+-    public static final RegistryNamespaced field_149771_c = new RegistryNamespacedDefaultedByKey("air");
++    public static final RegistryNamespaced field_149771_c = GameData.getBlockRegistry();
+     private CreativeTabs field_149772_a;
+     protected String field_149768_d;
+     public static final Block.SoundType field_149769_e = new Block.SoundType("stone", 1.0F, 1.0F);
+@@ -102,6 +124,8 @@
+     protected IIcon field_149761_L;
+     private static final String __OBFID = "CL_00000199";
+ 
++    public final cpw.mods.fml.common.registry.RegistryDelegate<Block> delegate = 
++            ((cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry)field_149771_c).getDelegate(this, Block.class);
+     public static int func_149682_b(Block p_149682_0_)
+     {
+         return field_149771_c.func_148757_b(p_149682_0_);
+@@ -109,7 +133,8 @@
  
      public static Block func_149729_e(int p_149729_0_)
      {
@@ -63,7 +79,7 @@
      }
  
      public static Block func_149634_a(Item p_149634_0_)
-@@ -483,9 +505,10 @@
+@@ -480,9 +505,10 @@
          return this.field_149789_z;
      }
  
@@ -75,7 +91,7 @@
      }
  
      public final void func_149676_a(float p_149676_1_, float p_149676_2_, float p_149676_3_, float p_149676_4_, float p_149676_5_, float p_149676_6_)
-@@ -502,13 +525,13 @@
+@@ -499,13 +525,13 @@
      public int func_149677_c(IBlockAccess p_149677_1_, int p_149677_2_, int p_149677_3_, int p_149677_4_)
      {
          Block block = p_149677_1_.func_147439_a(p_149677_2_, p_149677_3_, p_149677_4_);
@@ -91,7 +107,7 @@
          }
          else
          {
-@@ -597,7 +620,13 @@
+@@ -594,7 +620,13 @@
  
      public void func_149726_b(World p_149726_1_, int p_149726_2_, int p_149726_3_, int p_149726_4_) {}
  
@@ -106,7 +122,7 @@
  
      public int func_149745_a(Random p_149745_1_)
      {
-@@ -611,8 +640,7 @@
+@@ -608,8 +640,7 @@
  
      public float func_149737_a(EntityPlayer p_149737_1_, World p_149737_2_, int p_149737_3_, int p_149737_4_, int p_149737_5_)
      {
@@ -116,7 +132,7 @@
      }
  
      public final void func_149697_b(World p_149697_1_, int p_149697_2_, int p_149697_3_, int p_149697_4_, int p_149697_5_, int p_149697_6_)
-@@ -622,20 +650,16 @@
+@@ -619,20 +650,16 @@
  
      public void func_149690_a(World p_149690_1_, int p_149690_2_, int p_149690_3_, int p_149690_4_, int p_149690_5_, float p_149690_6_, int p_149690_7_)
      {
@@ -142,7 +158,7 @@
                  }
              }
          }
-@@ -643,8 +667,13 @@
+@@ -640,8 +667,13 @@
  
      protected void func_149642_a(World p_149642_1_, int p_149642_2_, int p_149642_3_, int p_149642_4_, ItemStack p_149642_5_)
      {
@@ -157,7 +173,7 @@
              float f = 0.7F;
              double d0 = (double)(p_149642_1_.field_73012_v.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
              double d1 = (double)(p_149642_1_.field_73012_v.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
-@@ -829,7 +858,7 @@
+@@ -826,7 +858,7 @@
  
      public boolean func_149742_c(World p_149742_1_, int p_149742_2_, int p_149742_3_, int p_149742_4_)
      {
@@ -166,7 +182,7 @@
      }
  
      public boolean func_149727_a(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
-@@ -922,25 +951,35 @@
+@@ -919,25 +951,35 @@
          p_149636_2_.func_71064_a(StatList.field_75934_C[func_149682_b(this)], 1);
          p_149636_2_.func_71020_j(0.025F);
  
@@ -205,7 +221,7 @@
      }
  
      protected ItemStack func_149644_j(int p_149644_1_)
-@@ -1116,6 +1155,1104 @@
+@@ -1113,6 +1155,1104 @@
          return null;
      }
  

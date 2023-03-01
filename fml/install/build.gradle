@@ -15,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'xyz.akirin.minecraftforge.gradle:ForgeGradle:1.2.2-rei.8.0'
+        classpath 'xyz.akirin.minecraftforge.gradle:ForgeGradle:1.2.2-rei.10.1.0'
     }
 }
 

@@ -88,7 +88,7 @@ import static net.minecraftforge.common.ForgeModContainer.VERSION_CHECK_CAT;
  *      ForgeChunkManager.syncConfigDefaults()
  *      ForgeChunkManager.loadConfiguration()
  */
-public class ForgeGuiFactory implements IModGuiFactory
+public abstract class ForgeGuiFactory implements IModGuiFactory
 {
     @Override
     public void initialize(Minecraft minecraftInstance) {}

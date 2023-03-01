@@ -1,6 +1,25 @@
 --- ../src-base/minecraft/net/minecraft/client/Minecraft.java
 +++ ../src-work/minecraft/net/minecraft/client/Minecraft.java
-@@ -276,7 +276,6 @@
+@@ -9,6 +9,9 @@
+ import com.google.common.util.concurrent.ListenableFutureTask;
+ import com.mojang.authlib.minecraft.MinecraftSessionService;
+ import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
++import cpw.mods.fml.client.FMLClientHandler;
++import cpw.mods.fml.common.FMLCommonHandler;
++import cpw.mods.fml.common.StartupQuery;
+ import cpw.mods.fml.relauncher.Side;
+ import cpw.mods.fml.relauncher.SideOnly;
+ import io.netty.util.concurrent.GenericFutureListener;
+@@ -169,6 +172,8 @@
+ import org.lwjgl.opengl.PixelFormat;
+ import org.lwjgl.util.glu.GLU;
+ 
++import com.google.common.collect.MapDifference;
++
+ @SideOnly(Side.CLIENT)
+ public class Minecraft implements IPlayerUsage
+ {
+@@ -271,7 +276,6 @@
          this.func_71389_H();
          this.field_71449_j = p_i1103_1_;
          field_147123_G.info("Setting user: " + p_i1103_1_.func_111285_a());
@@ -8,7 +27,34 @@
          this.field_71459_aj = p_i1103_5_;
          this.field_71443_c = p_i1103_2_;
          this.field_71440_d = p_i1103_3_;
-@@ -430,7 +429,7 @@
+@@ -344,21 +348,23 @@
+         File file2 = new File(file1, "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-client.txt");
+         System.out.println(p_71377_1_.func_71502_e());
+ 
++        int retVal;
+         if (p_71377_1_.func_71497_f() != null)
+         {
+             System.out.println("#@!@# Game crashed! Crash report saved to: #@!@# " + p_71377_1_.func_71497_f());
+-            System.exit(-1);
++            retVal = -1;
+         }
+         else if (p_71377_1_.func_147149_a(file2))
+         {
+             System.out.println("#@!@# Game crashed! Crash report saved to: #@!@# " + file2.getAbsolutePath());
+-            System.exit(-1);
++            retVal = -1;
+         }
+         else
+         {
+             System.out.println("#@?@# Game crashed! Crash report could not be saved. #@?@#");
+-            System.exit(-2);
++            retVal = -2;
+         }
++        FMLCommonHandler.instance().handleExit(retVal);
+     }
+ 
+     public void func_71367_a(String p_71367_1_, int p_71367_2_)
+@@ -423,7 +429,7 @@
  
          try
          {
@@ -17,16 +63,85 @@
          }
          catch (LWJGLException lwjglexception)
          {
-@@ -552,7 +551,7 @@
-         cpw.mods.fml.common.ProgressManager.pop(bar);
-         FMLClientHandler.instance().finishMinecraftLoading();
+@@ -471,11 +477,11 @@
+         this.field_110451_am = new SimpleReloadableResourceManager(this.field_110452_an);
+         this.field_135017_as = new LanguageManager(this.field_110452_an, this.field_71474_y.field_74363_ab);
+         this.field_110451_am.func_110542_a(this.field_135017_as);
+-        this.func_110436_a();
++        FMLClientHandler.instance().beginMinecraftLoading(this, this.field_110449_ao, this.field_110451_am);
+         this.field_71446_o = new TextureManager(this.field_110451_am);
+         this.field_110451_am.func_110542_a(this.field_71446_o);
+         this.field_152350_aA = new SkinManager(this.field_71446_o, new File(this.field_110446_Y, "skins"), this.field_152355_az);
+-        this.func_71357_I();
++        cpw.mods.fml.client.SplashProgress.drawVanillaScreen();
+         this.field_147127_av = new SoundHandler(this.field_110451_am, this.field_71474_y);
+         this.field_110451_am.func_110542_a(this.field_147127_av);
+         this.field_147126_aw = new MusicTicker(this);
+@@ -492,7 +498,10 @@
+         this.field_110451_am.func_110542_a(this.field_71464_q);
+         this.field_110451_am.func_110542_a(new GrassColorReloadListener());
+         this.field_110451_am.func_110542_a(new FoliageColorReloadListener());
++        cpw.mods.fml.common.ProgressManager.ProgressBar bar= cpw.mods.fml.common.ProgressManager.push("Rendering Setup", 9, true);
++        bar.step("Loading Render Manager");
+         RenderManager.field_78727_a.field_78721_f = new ItemRenderer(this);
++        bar.step("Loading Entity Renderer");
+         this.field_71460_t = new EntityRenderer(this, this.field_110451_am);
+         this.field_110451_am.func_110542_a(this.field_71460_t);
+         AchievementList.field_76004_f.func_75988_a(new IStatStringFormat()
+@@ -510,6 +519,7 @@
+                 }
+             }
+         });
++        bar.step("Loading GL properties");
+         this.field_71417_B = new MouseHelper();
+         this.func_71361_d("Pre startup");
+         GL11.glEnable(GL11.GL_TEXTURE_2D);
+@@ -524,30 +534,39 @@
+         GL11.glLoadIdentity();
+         GL11.glMatrixMode(GL11.GL_MODELVIEW);
+         this.func_71361_d("Startup");
++        bar.step("Render Global instance");
+         this.field_71438_f = new RenderGlobal(this);
+-        this.field_147128_au = new TextureMap(0, "textures/blocks");
++        bar.step("Building Blocks Texture");
++        this.field_147128_au = new TextureMap(0, "textures/blocks", true);
++        bar.step("Anisotropy and Mipmaps");
+         this.field_147128_au.func_147632_b(this.field_71474_y.field_151443_J);
+         this.field_147128_au.func_147633_a(this.field_71474_y.field_151442_I);
++        bar.step("Loading Blocks Texture");
+         this.field_71446_o.func_130088_a(TextureMap.field_110575_b, this.field_147128_au);
+-        this.field_71446_o.func_130088_a(TextureMap.field_110576_c, new TextureMap(1, "textures/items"));
++        bar.step("Loading Items Texture");
++        this.field_71446_o.func_130088_a(TextureMap.field_110576_c, new TextureMap(1, "textures/items", true));
++        bar.step("Viewport");
+         GL11.glViewport(0, 0, this.field_71443_c, this.field_71440_d);
+         this.field_71452_i = new EffectRenderer(this.field_71441_e, this.field_71446_o);
++        cpw.mods.fml.common.ProgressManager.pop(bar);
++        FMLClientHandler.instance().finishMinecraftLoading();
          this.func_71361_d("Post startup");
 -        this.field_71456_v = new GuiIngame(this);
 +        this.field_71456_v = new net.minecraftforge.client.GuiIngameForge(this);
  
          if (this.field_71475_ae != null)
          {
-@@ -772,11 +771,6 @@
+-            this.func_147108_a(new GuiConnecting(new GuiMainMenu(), this, this.field_71475_ae, this.field_71477_af));
++            FMLClientHandler.instance().connectToServerAtStartup(this.field_71475_ae, this.field_71477_af);
+         }
+         else
+         {
+             this.func_147108_a(new GuiMainMenu());
+         }
+ 
+-        this.field_71446_o.func_147645_c(this.field_152354_ay);
++        cpw.mods.fml.client.SplashProgress.clearVanillaResources(field_71446_o, field_152354_ay);
+         this.field_152354_ay = null;
+         this.field_71461_s = new LoadingScreenRenderer(this);
+ 
++        FMLClientHandler.instance().onInitializationComplete();
+         if (this.field_71474_y.field_74353_u && !this.field_71431_Q)
+         {
+             this.func_71352_k();
+@@ -752,11 +771,6 @@
  
      public void func_147108_a(GuiScreen p_147108_1_)
      {
@@ -38,7 +153,7 @@
          if (p_147108_1_ == null && this.field_71441_e == null)
          {
              p_147108_1_ = new GuiMainMenu();
-@@ -786,6 +780,17 @@
+@@ -766,6 +780,17 @@
              p_147108_1_ = new GuiGameOver();
          }
  
@@ -56,7 +171,19 @@
          if (p_147108_1_ instanceof GuiMainMenu)
          {
              this.field_71474_y.field_74330_P = false;
-@@ -1353,7 +1358,7 @@
+@@ -970,9 +995,11 @@
+ 
+         if (!this.field_71454_w)
+         {
++            FMLCommonHandler.instance().onRenderTickStart(this.field_71428_T.field_74281_c);
+             this.field_71424_I.func_76318_c("gameRenderer");
+             this.field_71460_t.func_78480_b(this.field_71428_T.field_74281_c);
+             this.field_71424_I.func_76319_b();
++            FMLCommonHandler.instance().onRenderTickEnd(this.field_71428_T.field_74281_c);
+         }
+ 
+         GL11.glFlush();
+@@ -1330,7 +1357,7 @@
  
                      if (this.field_71439_g.func_82246_f(i, j, k))
                      {
@@ -65,7 +192,7 @@
                          this.field_71439_g.func_71038_i();
                      }
                  }
-@@ -1434,11 +1439,12 @@
+@@ -1411,11 +1438,12 @@
                      int j = this.field_71476_x.field_72312_c;
                      int k = this.field_71476_x.field_72309_d;
  
@@ -80,7 +207,7 @@
                          {
                              flag = false;
                              this.field_71439_g.func_71038_i();
-@@ -1465,7 +1471,8 @@
+@@ -1442,7 +1470,8 @@
          {
              ItemStack itemstack1 = this.field_71439_g.field_71071_by.func_70448_g();
  
@@ -90,7 +217,16 @@
              {
                  this.field_71460_t.field_78516_c.func_78445_c();
              }
-@@ -1677,6 +1684,8 @@
+@@ -1554,6 +1583,8 @@
+             --this.field_71467_ac;
+         }
+ 
++        FMLCommonHandler.instance().onPreClientTick();
++
+         this.field_71424_I.func_76320_a("gui");
+ 
+         if (!this.field_71445_n)
+@@ -1652,6 +1683,8 @@
  
              while (Mouse.next())
              {
@@ -99,7 +235,52 @@
                  j = Mouse.getEventButton();
                  KeyBinding.func_74510_a(j - 100, Mouse.getEventButtonState());
  
-@@ -2139,6 +2148,11 @@
+@@ -1698,6 +1731,7 @@
+                         this.field_71462_r.func_146274_d();
+                     }
+                 }
++                FMLCommonHandler.instance().fireMouseInput();
+             }
+ 
+             if (this.field_71429_W > 0)
+@@ -1835,6 +1869,7 @@
+                         }
+                     }
+                 }
++                FMLCommonHandler.instance().fireKeyInput();
+             }
+ 
+             for (j = 0; j < 9; ++j)
+@@ -2025,12 +2060,15 @@
+             this.field_71453_ak.func_74428_b();
+         }
+ 
++        FMLCommonHandler.instance().onPostClientTick();
++
+         this.field_71424_I.func_76319_b();
+         this.field_71423_H = func_71386_F();
+     }
+ 
+     public void func_71371_a(String p_71371_1_, String p_71371_2_, WorldSettings p_71371_3_)
+     {
++        FMLClientHandler.instance().startIntegratedServer(p_71371_1_, p_71371_2_, p_71371_3_);
+         this.func_71403_a((WorldClient)null);
+         System.gc();
+         ISaveHandler isavehandler = this.field_71469_aa.func_75804_a(p_71371_1_, false);
+@@ -2066,6 +2104,12 @@
+ 
+         while (!this.field_71437_Z.func_71200_ad())
+         {
++            if (!StartupQuery.check())
++            {
++                func_71403_a(null);
++                func_147108_a(null);
++                return;
++            }
+             String s2 = this.field_71437_Z.func_71195_b_();
+ 
+             if (s2 != null)
+@@ -2103,6 +2147,11 @@
  
      public void func_71353_a(WorldClient p_71353_1_, String p_71353_2_)
      {
@@ -111,7 +292,7 @@
          if (p_71353_1_ == null)
          {
              NetHandlerPlayClient nethandlerplayclient = this.func_147114_u();
-@@ -2151,6 +2165,18 @@
+@@ -2115,6 +2164,18 @@
              if (this.field_71437_Z != null)
              {
                  this.field_71437_Z.func_71263_m();
@@ -130,7 +311,15 @@
              }
  
              this.field_71437_Z = null;
-@@ -2299,113 +2325,10 @@
+@@ -2141,6 +2202,7 @@
+             this.field_110448_aq.func_148529_f();
+             this.func_71351_a((ServerData)null);
+             this.field_71455_al = false;
++            FMLClientHandler.instance().handleClientWorldClosing(this.field_71441_e);
+         }
+ 
+         this.field_147127_av.func_147690_c();
+@@ -2262,113 +2324,10 @@
          if (this.field_71476_x != null)
          {
              boolean flag = this.field_71439_g.field_71075_bZ.field_75098_d;
@@ -246,7 +435,7 @@
              if (flag)
              {
                  j = this.field_71439_g.field_71069_bz.field_75151_b.size() - 9 + this.field_71439_g.field_71071_by.field_70461_c;
-@@ -2671,8 +2594,15 @@
+@@ -2634,8 +2593,15 @@
          p_70001_1_.func_152767_b("gl_max_texture_size", Integer.valueOf(func_71369_N()));
      }
  
@@ -262,7 +451,7 @@
          for (int i = 16384; i > 0; i >>= 1)
          {
              GL11.glTexImage2D(GL11.GL_PROXY_TEXTURE_2D, 0, GL11.GL_RGBA, i, i, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)null);
-@@ -2680,6 +2610,7 @@
+@@ -2643,6 +2609,7 @@
  
              if (j != 0)
              {

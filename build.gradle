@@ -3,6 +3,9 @@ buildscript {
         mavenCentral()
         mavenLocal()
         maven {
+			url = "https://jitpack.io"
+		}
+        maven {
             name = "tbc"
             url = "https://nexus.teamblackcrystal.com/repository/maven-public/"
         }
@@ -14,9 +17,15 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+            maven {
+            name 'GTNH Maven'
+            url 'http://jenkins.usrv.eu:8081/nexus/content/groups/public/'
+            //allowInsecureProtocol
+        }
     }
     dependencies {
-        classpath 'xyz.akirin.minecraftforge.gradle:ForgeGradle:1.2.2-rei.5.0'
+        //classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.13'
+        classpath 'xyz.akirin.minecraftforge.gradle:ForgeGradle:1.2.2-rei.10.1.0'
     }
 }
 

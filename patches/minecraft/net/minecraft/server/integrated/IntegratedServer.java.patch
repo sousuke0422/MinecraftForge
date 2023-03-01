@@ -1,6 +1,13 @@
 --- ../src-base/minecraft/net/minecraft/server/integrated/IntegratedServer.java
 +++ ../src-work/minecraft/net/minecraft/server/integrated/IntegratedServer.java
-@@ -23,6 +23,9 @@
+@@ -1,5 +1,6 @@
+ package net.minecraft.server.integrated;
+ 
++import cpw.mods.fml.common.FMLCommonHandler;
+ import cpw.mods.fml.relauncher.Side;
+ import cpw.mods.fml.relauncher.SideOnly;
+ import java.io.File;
+@@ -22,6 +23,9 @@
  import net.minecraft.world.WorldType;
  import net.minecraft.world.demo.DemoWorldServer;
  import net.minecraft.world.storage.ISaveHandler;
@@ -10,7 +17,7 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
-@@ -54,44 +57,23 @@
+@@ -53,44 +57,23 @@
      protected void func_71247_a(String p_71247_1_, String p_71247_2_, long p_71247_3_, WorldType p_71247_5_, String p_71247_6_)
      {
          this.func_71237_c(p_71247_1_);
@@ -63,3 +70,15 @@
          this.func_147139_a(this.func_147135_j());
          this.func_71222_d();
      }
+@@ -105,9 +88,10 @@
+         this.func_71245_h(true);
+         field_147148_h.info("Generating keypair");
+         this.func_71253_a(CryptManager.func_75891_b());
++        if (!FMLCommonHandler.instance().handleServerAboutToStart(this)) { return false; }
+         this.func_71247_a(this.func_71270_I(), this.func_71221_J(), this.field_71350_m.func_77160_d(), this.field_71350_m.func_77165_h(), this.field_71350_m.func_82749_j());
+         this.func_71205_p(this.func_71214_G() + " - " + this.field_71305_c[0].func_72912_H().func_76065_j());
+-        return true;
++        return FMLCommonHandler.instance().handleServerStarting(this);
+     }
+ 
+     public void func_71217_p()
