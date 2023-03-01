@@ -19,6 +19,7 @@ import java.lang.annotation.Target;
 
 import cpw.mods.fml.common.SidedProxy;
 
+/* Evacuate because it is generated in FG */
 
 /**
  * Marks the associated element as being only available on a certain {@link Side}. This is
@@ -29,13 +30,15 @@ import cpw.mods.fml.common.SidedProxy;
  * <code> @SideOnly public MyField field = new MyField();</code> will <strong>not</strong> work, as the initializer
  * is a separate piece of code to the actual field declaration, and will not be able to find
  * it's field on the wrong side.
+ * 
+ * DON'T USE IT.
  *
  * @author cpw
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.CONSTRUCTOR})
-public @interface SideOnly
+public @interface _SideOnly
 {
     public Side value();
 }

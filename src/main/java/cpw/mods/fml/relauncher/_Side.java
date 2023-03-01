@@ -12,7 +12,12 @@
 
 package cpw.mods.fml.relauncher;
 
-public enum Side {
+/* Evacuate because it is generated in FG */
+
+/**
+ * DON'T USE IT.
+ */
+public enum _Side {
 
     /**
      * The client side. Specifically, an environment where rendering capability exists.
