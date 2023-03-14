@@ -103,6 +103,7 @@ public class ASMDataTable
     {
         if (containerAnnotationData == null)
         {
+            // TODO: https://github.com/MinecraftForge/MinecraftForge/commit/7f337cf2309631bccd2d6c573c1a348f48f067f3
             ImmutableMap.Builder<ModContainer, SetMultimap<String, ASMData>> mapBuilder = ImmutableMap.<ModContainer, SetMultimap<String,ASMData>>builder();
             for (ModContainer cont : containers)
             {
