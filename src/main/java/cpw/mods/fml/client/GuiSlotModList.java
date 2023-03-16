@@ -42,8 +42,8 @@ public class GuiSlotModList extends GuiScrollingList
     public GuiSlotModList(GuiModList parent, ArrayList<ModContainer> mods, int listWidth, int slotHeight)
     {
         super(parent.getMinecraftInstance(), listWidth, parent.height, 32, parent.height - 88 + 4, 10, slotHeight, parent.width, parent.height);
-        this.parent=parent;
-        this.mods=mods;
+        this.parent = parent;
+        this.mods = mods;
     }
 
     @Override
@@ -53,15 +53,15 @@ public class GuiSlotModList extends GuiScrollingList
     }
 
     @Override
-    protected void elementClicked(int var1, boolean var2)
+    protected void elementClicked(int index, boolean doubleClick)
     {
-        this.parent.selectModIndex(var1);
+        this.parent.selectModIndex(index);
     }
 
     @Override
-    protected boolean isSelected(int var1)
+    protected boolean isSelected(int index)
     {
-        return this.parent.modIndexSelected(var1);
+        return this.parent.modIndexSelected(index);
     }
 
     @Override
