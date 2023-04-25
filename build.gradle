@@ -50,6 +50,7 @@ minecraft {
     version = '1.7.10'
     mcpVersion = '9.08'
     // mappings = 'snapshot_20140925' //todo?
+    mappings = 'stable_12'
     fmlDir = projectDir.getAbsolutePath() + "/fml";
     mainClass = 'cpw.mods.fml.relauncher.ServerLaunchWrapper'
     tweakClass = 'cpw.mods.fml.common.launcher.FMLTweaker'

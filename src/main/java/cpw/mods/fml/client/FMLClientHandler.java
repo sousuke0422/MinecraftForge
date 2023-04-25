@@ -491,12 +491,12 @@ public class FMLClientHandler implements IFMLSidedHandler
             {
                 if (Thread.interrupted()) throw new InterruptedException();
 
-                client.loadingScreen.resetProgresAndWorkingMessage("");
+                client.loadingScreen.displayLoadingString("");
 
                 Thread.sleep(50);
             }
 
-            client.loadingScreen.resetProgresAndWorkingMessage(""); // make sure the blank screen is being drawn at the end
+            client.loadingScreen.displayLoadingString(""); // make sure the blank screen is being drawn at the end
         }
     }
 
@@ -807,10 +807,10 @@ public class FMLClientHandler implements IFMLSidedHandler
             return null;
         }
         this.client.getTextureManager().bindTexture(iconSheet);
-        Gui.func_146110_a(x + width - 18, y + 10, 0, (float)idx, 16, 16, 256.0f, 256.0f);
+        Gui.drawModalRectWithCustomSizedTexture(x + width - 18, y + 10, 0, (float)idx, 16, 16, 256.0f, 256.0f);
         if (blocked)
         {
-            Gui.func_146110_a(x + width - 18, y + 10, 0, 80, 16, 16, 256.0f, 256.0f);
+            Gui.drawModalRectWithCustomSizedTexture(x + width - 18, y + 10, 0, 80, 16, 16, 256.0f, 256.0f);
         }
 
         return relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26 ? tooltip : null;
@@ -828,7 +828,7 @@ public class FMLClientHandler implements IFMLSidedHandler
         ServerData serverData = new ServerData("Command Line", host+":"+port);
         try
         {
-            osp.func_147224_a(serverData);
+            osp.ping(serverData);
             startupConnectionData.await(30, TimeUnit.SECONDS);
         }
         catch (Exception e)

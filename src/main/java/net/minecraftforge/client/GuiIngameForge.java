@@ -101,7 +101,7 @@ public class GuiIngameForge extends GuiIngame
 
         if (pre(ALL)) return;
 
-        fontrenderer = mc.fontRenderer;
+        fontrenderer = mc.fontRendererObj;
         mc.entityRenderer.setupOverlayRendering();
         GL11.glEnable(GL11.GL_BLEND);
 
@@ -155,10 +155,10 @@ public class GuiIngameForge extends GuiIngame
         renderHUDText(width, height);
         renderRecordOverlay(width, height, partialTicks);
 
-        ScoreObjective objective = mc.theWorld.getScoreboard().func_96539_a(1);
+        ScoreObjective objective = mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(1);
         if (renderObjective && objective != null)
         {
-            this.func_96136_a(objective, height, width, fontrenderer);
+            this.renderScoreboard(objective, height, width, fontrenderer);
         }
 
         GL11.glEnable(GL11.GL_BLEND);
@@ -763,7 +763,7 @@ public class GuiIngameForge extends GuiIngame
     @SuppressWarnings("unchecked")
     protected void renderPlayerList(int width, int height)
     {
-        ScoreObjective scoreobjective = this.mc.theWorld.getScoreboard().func_96539_a(0);
+        ScoreObjective scoreobjective = this.mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(0);
         NetHandlerPlayClient handler = mc.thePlayer.sendQueue;
 
         if (mc.gameSettings.keyBindPlayerList.getIsKeyPressed() && (!mc.isIntegratedServerRunning() || handler.playerInfoList.size() > 1 || scoreobjective != null))
@@ -813,7 +813,7 @@ public class GuiIngameForge extends GuiIngame
 
                         if (maxX - endX > 5)
                         {
-                            Score score = scoreobjective.getScoreboard().func_96529_a(player.name, scoreobjective);
+                            Score score = scoreobjective.getScoreboard().getValueFromObjective(player.name, scoreobjective);
                             String scoreDisplay = EnumChatFormatting.YELLOW + "" + score.getScorePoints();
                             fontrenderer.drawStringWithShadow(scoreDisplay, maxX - fontrenderer.getStringWidth(scoreDisplay), yPos, 16777215);
                         }

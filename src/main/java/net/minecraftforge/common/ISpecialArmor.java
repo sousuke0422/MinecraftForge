@@ -64,7 +64,7 @@ public interface ISpecialArmor
      * @param slot The armor slot the item is in.
      */
     public abstract void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot);
-    
+
     public static class ArmorProperties implements Comparable<ArmorProperties>
     {
         public int    Priority    = 0;
@@ -114,7 +114,7 @@ public interface ISpecialArmor
                 else if (stack.getItem() instanceof ItemArmor && !source.isUnblockable())
                 {
                     ItemArmor armor = (ItemArmor)stack.getItem();
-                    prop = new ArmorProperties(0, armor.damageReduceAmount / 25D, armor.getMaxDamage() + 1 - stack.getItemDamage());
+                    prop = new ArmorProperties(0, armor.damageReduceAmount / 25D, armor.getMaxDurability() + 1 - stack.getMetadata());
                 }
                 if (prop != null)
                 {

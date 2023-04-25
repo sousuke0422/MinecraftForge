@@ -462,7 +462,7 @@ public class ForgeHooksClient
 
     public static ISound playSound(SoundManager manager, ISound sound)
     {
-        SoundEventAccessorComposite accessor = manager.sndHandler.getSound(sound.getPositionedSoundLocation());
+        SoundEventAccessorComposite accessor = manager.sndHandler.getSound(sound.getSoundLocation());
         PlaySoundEvent17 e = new PlaySoundEvent17(manager, sound, (accessor == null ? null : accessor.getSoundCategory()));
         MinecraftForge.EVENT_BUS.post(e);
         return e.result;

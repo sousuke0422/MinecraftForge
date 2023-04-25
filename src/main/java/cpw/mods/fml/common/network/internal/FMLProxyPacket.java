@@ -43,7 +43,7 @@ public class FMLProxyPacket extends Packet {
 
     public FMLProxyPacket(C17PacketCustomPayload original)
     {
-        this(original.func_149558_e(), original.func_149559_c());
+        this(original.getData(), original.getChannel());
         this.target = Side.SERVER;
     }
 

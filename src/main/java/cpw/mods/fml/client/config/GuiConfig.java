@@ -193,12 +193,12 @@ public class GuiConfig extends GuiScreen
             this.needsRefresh = false;
         }
 
-        int undoGlyphWidth = mc.fontRenderer.getStringWidth(UNDO_CHAR) * 2;
-        int resetGlyphWidth = mc.fontRenderer.getStringWidth(RESET_CHAR) * 2;
-        int doneWidth = Math.max(mc.fontRenderer.getStringWidth(I18n.format("gui.done")) + 20, 100);
-        int undoWidth = mc.fontRenderer.getStringWidth(" " + I18n.format("fml.configgui.tooltip.undoChanges")) + undoGlyphWidth + 20;
-        int resetWidth = mc.fontRenderer.getStringWidth(" " + I18n.format("fml.configgui.tooltip.resetToDefault")) + resetGlyphWidth + 20;
-        int checkWidth = mc.fontRenderer.getStringWidth(I18n.format("fml.configgui.applyGlobally")) + 13;
+        int undoGlyphWidth = mc.fontRendererObj.getStringWidth(UNDO_CHAR) * 2;
+        int resetGlyphWidth = mc.fontRendererObj.getStringWidth(RESET_CHAR) * 2;
+        int doneWidth = Math.max(mc.fontRendererObj.getStringWidth(I18n.format("gui.done")) + 20, 100);
+        int undoWidth = mc.fontRendererObj.getStringWidth(" " + I18n.format("fml.configgui.tooltip.undoChanges")) + undoGlyphWidth + 20;
+        int resetWidth = mc.fontRendererObj.getStringWidth(" " + I18n.format("fml.configgui.tooltip.resetToDefault")) + resetGlyphWidth + 20;
+        int checkWidth = mc.fontRendererObj.getStringWidth(I18n.format("fml.configgui.applyGlobally")) + 13;
         int buttonWidthHalf = (doneWidth + 5 + undoWidth + 5 + resetWidth + 5 + checkWidth) / 2;
         this.buttonList.add(new GuiButtonExt(2000, this.width / 2 - buttonWidthHalf, this.height - 29, doneWidth, 20, I18n.format("gui.done")));
         this.buttonList.add(this.btnDefaultAll = new GuiUnicodeGlyphButton(2001, this.width / 2 - buttonWidthHalf + doneWidth + 5 + undoWidth + 5,
@@ -291,11 +291,11 @@ public class GuiConfig extends GuiScreen
     }
 
     @Override
-    protected void mouseMovedOrUp(int x, int y, int mouseEvent)
+    protected void mouseReleased(int x, int y, int mouseEvent)
     {
         if (mouseEvent != 0 || !this.entryList.func_148181_b(x, y, mouseEvent))
         {
-            super.mouseMovedOrUp(x, y, mouseEvent);
+            super.mouseReleased(x, y, mouseEvent);
         }
     }
 
@@ -325,10 +325,10 @@ public class GuiConfig extends GuiScreen
 
         if (title2 != null)
         {
-            int strWidth = mc.fontRenderer.getStringWidth(title2);
-            int elipsisWidth = mc.fontRenderer.getStringWidth("...");
+            int strWidth = mc.fontRendererObj.getStringWidth(title2);
+            int elipsisWidth = mc.fontRendererObj.getStringWidth("...");
             if (strWidth > width - 6 && strWidth > elipsisWidth)
-                title2 = mc.fontRenderer.trimStringToWidth(title2, width - 6 - elipsisWidth).trim() + "...";
+                title2 = mc.fontRendererObj.trimStringToWidth(title2, width - 6 - elipsisWidth).trim() + "...";
             this.drawCenteredString(this.fontRendererObj, title2, this.width / 2, 18, 16777215);
         }
 
@@ -337,16 +337,16 @@ public class GuiConfig extends GuiScreen
         super.drawScreen(mouseX, mouseY, partialTicks);
         this.entryList.drawScreenPost(mouseX, mouseY, partialTicks);
         if (this.undoHoverChecker.checkHover(mouseX, mouseY))
-            this.drawToolTip(this.mc.fontRenderer.listFormattedStringToWidth(I18n.format("fml.configgui.tooltip.undoAll"), 300), mouseX, mouseY);
+            this.drawToolTip(this.mc.fontRendererObj.listFormattedStringToWidth(I18n.format("fml.configgui.tooltip.undoAll"), 300), mouseX, mouseY);
         if (this.resetHoverChecker.checkHover(mouseX, mouseY))
-            this.drawToolTip(this.mc.fontRenderer.listFormattedStringToWidth(I18n.format("fml.configgui.tooltip.resetAll"), 300), mouseX, mouseY);
+            this.drawToolTip(this.mc.fontRendererObj.listFormattedStringToWidth(I18n.format("fml.configgui.tooltip.resetAll"), 300), mouseX, mouseY);
         if (this.checkBoxHoverChecker.checkHover(mouseX, mouseY))
-            this.drawToolTip(this.mc.fontRenderer.listFormattedStringToWidth(I18n.format("fml.configgui.tooltip.applyGlobally"), 300), mouseX, mouseY);
+            this.drawToolTip(this.mc.fontRendererObj.listFormattedStringToWidth(I18n.format("fml.configgui.tooltip.applyGlobally"), 300), mouseX, mouseY);
     }
 
     @SuppressWarnings("rawtypes")
     public void drawToolTip(List stringList, int x, int y)
     {
-        this.func_146283_a(stringList, x, y);
+        this.drawHoveringText(stringList, x, y);
     }
 }

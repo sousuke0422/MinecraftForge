@@ -33,6 +33,6 @@ public class PlayStreamingSourceEvent extends SoundSourceEvent
         super(manager, sound, uuid);
         this.x = this.y = this.z = 0;
         this.manager = null;
-        this.name = sound.getPositionedSoundLocation().getResourcePath();
+        this.name = sound.getSoundLocation().getResourcePath();
     }
 }

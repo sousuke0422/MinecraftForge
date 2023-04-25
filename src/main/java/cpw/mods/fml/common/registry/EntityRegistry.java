@@ -127,7 +127,7 @@ public class EntityRegistry
     {
         availableIndicies = new BitSet(256);
         availableIndicies.set(1,255);
-        for (Object id : EntityList.IDtoClassMapping.keySet())
+        for (Object id : EntityList.idToClassMap.keySet())
         {
             availableIndicies.clear((Integer)id);
         }
