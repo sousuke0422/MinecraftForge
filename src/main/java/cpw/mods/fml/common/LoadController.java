@@ -46,6 +46,8 @@ import cpw.mods.fml.common.event.FMLStateEvent;
 import cpw.mods.fml.common.functions.ArtifactVersionNameFunction;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 
+import net.minecraftforge.common.util.TextTable;
+
 public class LoadController
 {
     private Loader loader;
@@ -126,7 +128,7 @@ public class LoadController
             FMLLog.info("The game window is being closed by the player, exiting.");
             FMLCommonHandler.instance().exitJava(0, false);
         }
-        
+
         LoaderState oldState = state;
         state = state.transition(!errors.isEmpty());
         if (state != desiredState && !forceState)
@@ -275,14 +277,29 @@ public class LoadController
         for (ModState state : ModState.values())
             ret.append(" '").append(state.getMarker()).append("' = ").append(state.toString());
 
+        TextTable table = new TextTable(Lists.newArrayList(
+                TextTable.column("State"),
+                TextTable.column("ID"),
+                TextTable.column("Version"),
+                TextTable.column("Source"),
+                TextTable.column("Signature"))
+            );
+
         for (ModContainer mc : loader.getModList())
         {
-            ret.append("\n\t");
-            for (ModState state : modStates.get(mc.getModId()))
-                ret.append(state.getMarker());
-
-            ret.append("\t").append(mc.getModId()).append("{").append(mc.getVersion()).append("} [").append(mc.getName()).append("] (").append(mc.getSource().getName()).append(") ");
+            table.add(
+                    modStates.get(mc.getModId()).stream().map(ModState::getMarker).reduce("", (a, b) -> a + b),
+                    mc.getModId(),
+                    mc.getVersion(),
+                    mc.getSource().getName(),
+                    mc.getSigningCertificate() != null ? CertificateHelper.getFingerprint(mc.getSigningCertificate()) : "None"
+                );
         }
+
+        ret.append("\n");
+        ret.append("\n\t");
+        table.append(ret, "\n\t");
+        ret.append("\n");
     }
 
     public List<ModContainer> getActiveModList()
