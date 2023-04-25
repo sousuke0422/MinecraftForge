@@ -394,8 +394,8 @@ public class ForgeHooks
             "((?:[a-z0-9]{2,}:\\/\\/)?(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|(?:[-\\w_\\.]{1,}\\.[a-z]{2,}?))(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
             Pattern.CASE_INSENSITIVE);
 
-    public static IChatComponent newChatWithLinks(String string){ return newChatWithLinks(string, true); }
-    public static IChatComponent newChatWithLinks(String string, boolean allowMissingHeader)
+            public static IChatComponent newChatWithLinks(String string){ return newChatWithLinks(string, true); }
+            public static IChatComponent newChatWithLinks(String string, boolean allowMissingHeader)
     {
         // Includes ipv4 and domain pattern
         // Matches an ip (xx.xxx.xx.xxx) or a domain (something.com) with or
