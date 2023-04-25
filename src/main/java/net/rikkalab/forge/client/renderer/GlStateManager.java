@@ -992,7 +992,6 @@ public class GlStateManager {
 
         // $FF: synthetic field
         static final int[] field_179175_a = new int[GlStateManager.TexGen.values().length];
-        private static final String __OBFID = "CL_00002557";
 
 
         static {
