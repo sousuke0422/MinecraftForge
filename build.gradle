@@ -24,8 +24,7 @@ buildscript {
         }
     }
     dependencies {
-        //classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.13'
-        classpath 'xyz.akirin.minecraftforge.gradle:ForgeGradle:1.2.2-rei.10.2.0'
+        classpath 'xyz.akirin.minecraftforge.gradle:ForgeGradle:1.2.2-rei.11.0'
     }
 }
 
