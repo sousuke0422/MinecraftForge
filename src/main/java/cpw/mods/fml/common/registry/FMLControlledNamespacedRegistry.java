@@ -82,7 +82,7 @@ public class FMLControlledNamespacedRegistry<I> extends RegistryNamespaced {
 
             if (obj instanceof ItemBlock)
             {
-                Block block = ((ItemBlock) obj).field_150939_a;
+                Block block = ((ItemBlock) obj).blockInstance;
 
                 // verify matching block entry
                 if (iBlockRegistry.getId(block) != id)

@@ -210,7 +210,7 @@ public abstract class BlockFluidBase extends Block implements IFluidBlock
     public abstract int getQuantaValue(IBlockAccess world, int x, int y, int z);
 
     @Override
-    public abstract boolean canCollideCheck(int meta, boolean fullHit);
+    public abstract boolean canStopRayTrace(int meta, boolean fullHit);
 
     public abstract int getMaxRenderHeightMeta();
 
@@ -229,7 +229,7 @@ public abstract class BlockFluidBase extends Block implements IFluidBlock
 
     // Used to prevent updates on chunk generation
     @Override
-    public boolean func_149698_L()
+    public boolean requiresUpdates()
     {
         return false;
     }
@@ -241,7 +241,7 @@ public abstract class BlockFluidBase extends Block implements IFluidBlock
     }
 
     @Override
-    public boolean getBlocksMovement(IBlockAccess world, int x, int y, int z)
+    public boolean isPassable(IBlockAccess world, int x, int y, int z)
     {
         return true;
     }
@@ -271,7 +271,7 @@ public abstract class BlockFluidBase extends Block implements IFluidBlock
     }
 
     @Override
-    public void velocityToAddToEntity(World world, int x, int y, int z, Entity entity, Vec3 vec)
+    public void modifyEntityVelocity(World world, int x, int y, int z, Entity entity, Vec3 vec)
     {
         if (densityDir > 0) return;
         Vec3 vec_flow = this.getFlowVector(world, x, y, z);

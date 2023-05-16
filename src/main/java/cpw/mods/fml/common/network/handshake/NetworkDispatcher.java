@@ -303,7 +303,7 @@ public class NetworkDispatcher extends SimpleChannelInboundHandler<Packet> imple
             this.manager.channel().pipeline().remove("fml:vanilla_detector");
             state = ConnectionState.HANDSHAKING;
         }
-        String channelName = msg.func_149559_c();
+        String channelName = msg.getChannel();
         if ("FML|HS".equals(channelName) || "REGISTER".equals(channelName) || "UNREGISTER".equals(channelName))
         {
             FMLProxyPacket proxy = new FMLProxyPacket(msg);

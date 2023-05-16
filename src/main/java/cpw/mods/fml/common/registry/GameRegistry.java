@@ -263,17 +263,17 @@ public class GameRegistry
 
     public static void addSmelting(Block input, ItemStack output, float xp)
     {
-        FurnaceRecipes.smelting().func_151393_a(input, output, xp);
+        FurnaceRecipes.instance().addSmeltingRecipeForBlock(input, output, xp);
     }
 
     public static void addSmelting(Item input, ItemStack output, float xp)
     {
-        FurnaceRecipes.smelting().func_151396_a(input, output, xp);
+        FurnaceRecipes.instance().addSmelting(input, output, xp);
     }
 
     public static void addSmelting(ItemStack input, ItemStack output, float xp)
     {
-        FurnaceRecipes.smelting().func_151394_a(input, output, xp);
+        FurnaceRecipes.instance().addSmeltingRecipe(input, output, xp);
     }
 
     public static void registerTileEntity(Class<? extends TileEntity> tileEntityClass, String id)

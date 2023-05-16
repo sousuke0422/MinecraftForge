@@ -405,7 +405,7 @@ public class GuiEditArrayEntries extends GuiListExtended
         public StringEntry(GuiEditArray owningScreen, GuiEditArrayEntries owningEntryList, IConfigElement configElement, Object value)
         {
             super(owningScreen, owningEntryList, configElement);
-            this.textFieldValue = new GuiTextField(owningEntryList.mc.fontRenderer, owningEntryList.width / 4 + 1, 0, owningEntryList.controlWidth - 3, 16);
+            this.textFieldValue = new GuiTextField(owningEntryList.mc.fontRendererObj, owningEntryList.width / 4 + 1, 0, owningEntryList.controlWidth - 3, 16);
             this.textFieldValue.setMaxStringLength(10000);
             this.textFieldValue.setText(value.toString());
             this.isValidated = configElement.getValidationPattern() != null;
@@ -507,7 +507,7 @@ public class GuiEditArrayEntries extends GuiListExtended
         {
             if (this.btnValue.mousePressed(owningEntryList.mc, x, y))
             {
-                btnValue.func_146113_a(owningEntryList.mc.getSoundHandler());
+                btnValue.playPressSound(owningEntryList.mc.getSoundHandler());
                 value = !value;
                 owningEntryList.recalculateState();
                 return true;
@@ -567,10 +567,10 @@ public class GuiEditArrayEntries extends GuiListExtended
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, Tessellator tessellator, int mouseX, int mouseY, boolean isSelected)
         {
             if (this.getValue() != null && this.isValidated)
-                owningEntryList.mc.fontRenderer.drawString(
+                owningEntryList.mc.fontRendererObj.drawString(
                         isValidValue ? EnumChatFormatting.GREEN + VALID : EnumChatFormatting.RED + INVALID,
-                        listWidth / 4 - owningEntryList.mc.fontRenderer.getStringWidth(VALID) - 2,
-                        y + slotHeight / 2 - owningEntryList.mc.fontRenderer.FONT_HEIGHT / 2,
+                        listWidth / 4 - owningEntryList.mc.fontRendererObj.getStringWidth(VALID) - 2,
+                        y + slotHeight / 2 - owningEntryList.mc.fontRendererObj.FONT_HEIGHT / 2,
                         16777215);
 
             int half = listWidth / 2;
@@ -610,14 +610,14 @@ public class GuiEditArrayEntries extends GuiListExtended
         {
             if (this.btnAddNewEntryAbove.mousePressed(owningEntryList.mc, x, y))
             {
-                btnAddNewEntryAbove.func_146113_a(owningEntryList.mc.getSoundHandler());
+                btnAddNewEntryAbove.playPressSound(owningEntryList.mc.getSoundHandler());
                 owningEntryList.addNewEntry(index);
                 owningEntryList.recalculateState();
                 return true;
             }
             else if (this.btnRemoveEntry.mousePressed(owningEntryList.mc, x, y))
             {
-                btnRemoveEntry.func_146113_a(owningEntryList.mc.getSoundHandler());
+                btnRemoveEntry.playPressSound(owningEntryList.mc.getSoundHandler());
                 owningEntryList.removeEntry(index);
                 owningEntryList.recalculateState();
                 return true;

@@ -816,7 +816,7 @@ public class GameData {
     {
         if (item instanceof ItemBlock) // ItemBlock, adjust id and clear the slot already occupied by the corresponding block
         {
-            Block block = ((ItemBlock) item).field_150939_a;
+            Block block = ((ItemBlock) item).blockInstance;
             if (idHint != -1 && getMain().blockSubstitutions.containsKey(name))
             {
                 block = getMain().blockSubstitutions.get(name);
@@ -876,7 +876,7 @@ public class GameData {
 
         for (Item item : iItemRegistry.typeSafeIterable()) // find matching ItemBlock
         {
-            if (item instanceof ItemBlock && ((ItemBlock) item).field_150939_a == block)
+            if (item instanceof ItemBlock && ((ItemBlock) item).blockInstance == block)
             {
                 itemBlock = (ItemBlock) item;
                 break;
@@ -978,7 +978,7 @@ public class GameData {
 
     private void verifyItemBlockName(ItemBlock item)
     {
-        String blockName = iBlockRegistry.getNameForObject(item.field_150939_a);
+        String blockName = iBlockRegistry.getNameForObject(item.blockInstance);
         String itemName = iItemRegistry.getNameForObject(item);
 
         if (blockName != null && !blockName.equals(itemName))

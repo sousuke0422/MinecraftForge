@@ -24,7 +24,7 @@ public class PlaySoundEvent17 extends SoundEvent
         super(manager);
         this.sound = sound;
         this.category = category;
-        this.name = sound.getPositionedSoundLocation().getResourcePath();
+        this.name = sound.getSoundLocation().getResourcePath();
         this.result = sound;
     }
 }

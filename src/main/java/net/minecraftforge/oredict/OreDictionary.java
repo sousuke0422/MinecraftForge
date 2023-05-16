@@ -319,7 +319,7 @@ public class OreDictionary
         List<Integer> ids = stackToId.get(id); //Try the wildcard first
         if (ids == null || ids.size() == 0)
         {
-            ids = stackToId.get(id | ((stack.getItemDamage() + 1) << 16)); // Mow the Meta specific one, +1 so that meta 0 is significant
+            ids = stackToId.get(id | ((stack.getMetadata() + 1) << 16)); // Mow the Meta specific one, +1 so that meta 0 is significant
         }
         return (ids != null && ids.size() > 0) ? ids.get(0) : -1;
     }
@@ -353,7 +353,7 @@ public class OreDictionary
         }
         List<Integer> ids = stackToId.get(id);
         if (ids != null) set.addAll(ids);
-        ids = stackToId.get(id | ((stack.getItemDamage() + 1) << 16));
+        ids = stackToId.get(id | ((stack.getMetadata() + 1) << 16));
         if (ids != null) set.addAll(ids);
 
         Integer[] tmp = set.toArray(new Integer[set.size()]);
@@ -492,7 +492,7 @@ public class OreDictionary
         {
             return false;
         }
-        return (target.getItem() == input.getItem() && ((target.getItemDamage() == WILDCARD_VALUE && !strict) || target.getItemDamage() == input.getItemDamage()));
+        return (target.getItem() == input.getItem() && ((target.getMetadata() == WILDCARD_VALUE && !strict) || target.getMetadata() == input.getMetadata()));
     }
 
     //Convenience functions that make for cleaner code mod side. They all drill down to registerOre(String, int, ItemStack)
@@ -540,9 +540,9 @@ public class OreDictionary
         {
             hash = GameData.getItemRegistry().getId(registryName);
         }
-        if (ore.getItemDamage() != WILDCARD_VALUE)
+        if (ore.getMetadata() != WILDCARD_VALUE)
         {
-            hash |= ((ore.getItemDamage() + 1) << 16); // +1 so 0 is significant
+            hash |= ((ore.getMetadata() + 1) << 16); // +1 so 0 is significant
         }
 
         //Add things to the baked version, and prevent duplicates
@@ -595,9 +595,9 @@ public class OreDictionary
                 {
                     hash = GameData.getItemRegistry().getId(name);
                 }
-                if (ore.getItemDamage() != WILDCARD_VALUE)
+                if (ore.getMetadata() != WILDCARD_VALUE)
                 {
-                    hash |= ((ore.getItemDamage() + 1) << 16); // +1 so meta 0 is significant
+                    hash |= ((ore.getMetadata() + 1) << 16); // +1 so meta 0 is significant
                 }
                 List<Integer> ids = stackToId.get(hash);
                 if (ids == null)

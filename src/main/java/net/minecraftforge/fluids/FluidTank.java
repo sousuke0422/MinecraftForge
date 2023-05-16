@@ -127,7 +127,7 @@ public class FluidTank implements IFluidTank
 
             if (tile != null)
             {
-                FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, this, fluid.amount));
+                FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, tile.getWorld(), tile.xCoord, tile.yCoord, tile.zCoord, this, fluid.amount));
             }
             return fluid.amount;
         }
@@ -150,7 +150,7 @@ public class FluidTank implements IFluidTank
 
         if (tile != null)
         {
-            FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, this, filled));
+            FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, tile.getWorld(), tile.xCoord, tile.yCoord, tile.zCoord, this, filled));
         }
         return filled;
     }
@@ -180,7 +180,7 @@ public class FluidTank implements IFluidTank
 
             if (tile != null)
             {
-                FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(fluid, tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, this, drained));
+                FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(fluid, tile.getWorld(), tile.xCoord, tile.yCoord, tile.zCoord, this, drained));
             }
         }
         return stack;

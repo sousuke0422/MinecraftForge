@@ -11,11 +11,11 @@ import net.minecraft.world.World;
 
 /**
  * This is a cellular-automata based finite fluid block implementation.
- * 
+ *
  * It is highly recommended that you use/extend this class for finite fluid blocks.
- * 
+ *
  * @author OvermindDL1, KingLemming
- * 
+ *
  */
 public class BlockFluidFinite extends BlockFluidBase
 {
@@ -42,7 +42,7 @@ public class BlockFluidFinite extends BlockFluidBase
     }
 
     @Override
-    public boolean canCollideCheck(int meta, boolean fullHit)
+    public boolean canStopRayTrace(int meta, boolean fullHit)
     {
         return fullHit && meta == quantaPerBlock - 1;
     }
@@ -315,7 +315,7 @@ public class BlockFluidFinite extends BlockFluidBase
         {
             world.setBlock(x, y, z, Blocks.air);
         }
-        
+
         return new FluidStack(getFluid(),
                 MathHelper.floor_float(getQuantaPercentage(world, x, y, z) * FluidContainerRegistry.BUCKET_VOLUME));
     }

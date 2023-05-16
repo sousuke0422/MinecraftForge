@@ -394,8 +394,8 @@ public class ForgeHooks
             "((?:[a-z0-9]{2,}:\\/\\/)?(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|(?:[-\\w_\\.]{1,}\\.[a-z]{2,}?))(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
             Pattern.CASE_INSENSITIVE);
 
-    public static IChatComponent newChatWithLinks(String string){ return newChatWithLinks(string, true); }
-    public static IChatComponent newChatWithLinks(String string, boolean allowMissingHeader)
+            public static IChatComponent newChatWithLinks(String string){ return newChatWithLinks(string, true); }
+            public static IChatComponent newChatWithLinks(String string, boolean allowMissingHeader)
     {
         // Includes ipv4 and domain pattern
         // Matches an ip (xx.xxx.xx.xxx) or a domain (something.com) with or
@@ -528,7 +528,7 @@ public class ForgeHooks
     public static boolean onPlaceItemIntoWorld(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
         // handle all placement events here
-        int meta = itemstack.getItemDamage();
+        int meta = itemstack.getMetadata();
         int size = itemstack.stackSize;
         NBTTagCompound nbt = null;
         if (itemstack.getTagCompound() != null)
@@ -547,7 +547,7 @@ public class ForgeHooks
         if (flag)
         {
             // save new item data
-            int newMeta = itemstack.getItemDamage();
+            int newMeta = itemstack.getMetadata();
             int newSize = itemstack.stackSize;
             NBTTagCompound newNBT = null;
             if (itemstack.getTagCompound() != null)
@@ -559,7 +559,7 @@ public class ForgeHooks
             world.capturedBlockSnapshots.clear();
 
             // make sure to set pre-placement item data for event
-            itemstack.setItemDamage(meta);
+            itemstack.setMetadata(meta);
             itemstack.stackSize = size;
             if (nbt != null)
             {
@@ -588,7 +588,7 @@ public class ForgeHooks
             else
             {
                 // Change the stack to its new content
-                itemstack.setItemDamage(newMeta);
+                itemstack.setMetadata(newMeta);
                 itemstack.stackSize = newSize;
                 if (nbt != null)
                 {
@@ -627,7 +627,7 @@ public class ForgeHooks
 
         outputSlot.setInventorySlotContents(0, e.output);
         container.maximumCost = e.cost;
-        container.stackSizeToBeUsedInRepair = e.materialCost;
+        container.materialCost = e.materialCost;
         return false;
     }
 
@@ -640,7 +640,7 @@ public class ForgeHooks
 
     public static boolean onNoteChange(TileEntityNote te, byte old)
     {
-        NoteBlockEvent.Change e = new NoteBlockEvent.Change(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord, te.getBlockMetadata(), old, te.note);
+        NoteBlockEvent.Change e = new NoteBlockEvent.Change(te.getWorld(), te.xCoord, te.yCoord, te.zCoord, te.getBlockMetadata(), old, te.note);
         if (MinecraftForge.EVENT_BUS.post(e))
         {
             te.note = old;

@@ -46,9 +46,9 @@ public abstract class CustomModLoadingErrorDisplayException extends EnhancedRunt
      * Called after the GUI is inited by the parent code. You can do extra stuff here, maybe?
      *
      * @param errorScreen The error screen we're painting
-     * @param fontRenderer A font renderer for you
+     * @param fontRendererObj A font renderer for you
      */
-    public abstract void initGui(GuiErrorScreen errorScreen, FontRenderer fontRenderer);
+    public abstract void initGui(GuiErrorScreen errorScreen, FontRenderer fontRendererObj);
 
     /**
      * Draw your error to the screen.
@@ -57,12 +57,12 @@ public abstract class CustomModLoadingErrorDisplayException extends EnhancedRunt
      * Do not try and do anything involving complex user interaction here.
      *
      * @param errorScreen The error screen to draw to
-     * @param fontRenderer A font renderer for you
+     * @param fontRendererObj A font renderer for you
      * @param mouseRelX Mouse X
      * @param mouseRelY Mouse Y
      * @param tickTime tick time
      */
-    public abstract void drawScreen(GuiErrorScreen errorScreen, FontRenderer fontRenderer, int mouseRelX, int mouseRelY, float tickTime);
+    public abstract void drawScreen(GuiErrorScreen errorScreen, FontRenderer fontRendererObj, int mouseRelX, int mouseRelY, float tickTime);
 
     @Override public void printStackTrace(EnhancedRuntimeException.WrappedPrintStream s){}; // Do Nothing unless the modder wants to.
 }

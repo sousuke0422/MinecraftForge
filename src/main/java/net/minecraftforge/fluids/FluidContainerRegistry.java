@@ -48,7 +48,7 @@ public abstract class FluidContainerRegistry
         {
             int code = 1;
             code = 31*code + container.getItem().hashCode();
-            code = 31*code + container.getItemDamage();
+            code = 31*code + container.getMetadata();
             if (stack != null)
                 code = 31*code + stack.getFluid().hashCode();
             return code;
@@ -59,7 +59,7 @@ public abstract class FluidContainerRegistry
             if (!(o instanceof ContainerKey)) return false;
             ContainerKey ck = (ContainerKey)o;
             if (container.getItem() != ck.container.getItem()) return false;
-            if (container.getItemDamage() != ck.container.getItemDamage()) return false;
+            if (container.getMetadata() != ck.container.getMetadata()) return false;
             if (stack == null && ck.stack != null) return false;
             if (stack != null && ck.stack == null) return false;
             if (stack == null && ck.stack == null) return true;

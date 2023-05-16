@@ -14,7 +14,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
-//Preliminary, simple Fake Player class 
+//Preliminary, simple Fake Player class
 public class FakePlayer extends EntityPlayerMP
 {
     public FakePlayer(WorldServer world, GameProfile name)
@@ -23,7 +23,7 @@ public class FakePlayer extends EntityPlayerMP
     }
 
     @Override public boolean canCommandSenderUseCommand(int i, String s){ return false; }
-    @Override public ChunkCoordinates getPlayerCoordinates()
+    @Override public ChunkCoordinates getCommandSenderPosition()
     {
         return new ChunkCoordinates(0,0,0);
     }

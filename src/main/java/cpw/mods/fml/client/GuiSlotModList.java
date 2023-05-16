@@ -108,8 +108,7 @@ public class GuiSlotModList extends GuiScrollingList
                 Minecraft.getMinecraft().getTextureManager().bindTexture(VERSION_CHECK_ICONS);
                 GL11.glClearColor(1, 1, 1, 1);
                 GL11.glPushMatrix();
-                // func_146110_a = drawModalRectWithCustomSizedTexture
-                Gui.func_146110_a(right - (height / 2 + 4), top + (height / 2 - 4), vercheck.status.getSheetOffset() * 8, (vercheck.status.isAnimated() && ((System.currentTimeMillis() / 800 & 1)) == 1) ? 8 : 0, 8, 8, 64, 16);
+                Gui.drawModalRectWithCustomSizedTexture(right - (height / 2 + 4), top + (height / 2 - 4), vercheck.status.getSheetOffset() * 8, (vercheck.status.isAnimated() && ((System.currentTimeMillis() / 800 & 1)) == 1) ? 8 : 0, 8, 8, 64, 16);
                 GL11.glPopMatrix();
             }
 

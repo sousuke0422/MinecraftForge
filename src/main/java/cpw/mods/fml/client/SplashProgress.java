@@ -66,7 +66,7 @@ public class SplashProgress
     private static volatile Throwable threadError;
     private static int angle = 0;
     private static final Lock lock = new ReentrantLock(true);
-    private static SplashFontRenderer fontRenderer;
+    private static SplashFontRenderer fontRendererObj;
 
     private static final IResourcePack mcPack = Minecraft.getMinecraft().mcDefaultResourcePack;
     private static final IResourcePack fmlPack = createResourcePack(FMLSanityChecker.fmlLocation);
@@ -222,7 +222,7 @@ public class SplashProgress
                 logoTexture = new Texture(logoLoc, null, false);
                 forgeTexture = new Texture(forgeLoc, forgeFallbackLoc);
                 glEnable(GL_TEXTURE_2D);
-                fontRenderer = new SplashFontRenderer();
+                fontRendererObj = new SplashFontRenderer();
                 glDisable(GL_TEXTURE_2D);
                 while(!done)
                 {
@@ -367,7 +367,7 @@ public class SplashProgress
                 setColor(fontColor);
                 glScalef(2, 2, 1);
                 glEnable(GL_TEXTURE_2D);
-                fontRenderer.drawString(b.getTitle() + " - " + b.getMessage(), 0, 0, 0x000000);
+                fontRendererObj.drawString(b.getTitle() + " - " + b.getMessage(), 0, 0, 0x000000);
                 glDisable(GL_TEXTURE_2D);
                 glPopMatrix();
                 // border
@@ -384,11 +384,11 @@ public class SplashProgress
                 drawBox((barWidth - 2) * (b.getStep() + 1) / (b.getSteps() + 1), barHeight - 2); // Step can sometimes be 0.
                 // progress text
                 String progress = "" + b.getStep() + "/" + b.getSteps();
-                glTranslatef(((float)barWidth - 2) / 2 - fontRenderer.getStringWidth(progress), 2, 0);
+                glTranslatef(((float)barWidth - 2) / 2 - fontRendererObj.getStringWidth(progress), 2, 0);
                 setColor(fontColor);
                 glScalef(2, 2, 1);
                 glEnable(GL_TEXTURE_2D);
-                fontRenderer.drawString(progress, 0, 0, 0x000000);
+                fontRendererObj.drawString(progress, 0, 0, 0x000000);
                 glPopMatrix();
             }
 
@@ -404,7 +404,7 @@ public class SplashProgress
                 setColor(fontColor);
                 glScalef(2, 2, 1);
                 glEnable(GL_TEXTURE_2D);
-                fontRenderer.drawString("Memory Used / Total", 0, 0, 0x000000);
+                fontRendererObj.drawString("Memory Used / Total", 0, 0, 0x000000);
                 glDisable(GL_TEXTURE_2D);
                 glPopMatrix();
                 // border
@@ -448,11 +448,11 @@ public class SplashProgress
 
                 // progress text
                 String progress = getMemoryString(usedMemory) + " / " + getMemoryString(maxMemory);
-                glTranslatef(((float)barWidth - 2) / 2 - fontRenderer.getStringWidth(progress), 2, 0);
+                glTranslatef(((float)barWidth - 2) / 2 - fontRendererObj.getStringWidth(progress), 2, 0);
                 setColor(fontColor);
                 glScalef(2, 2, 1);
                 glEnable(GL_TEXTURE_2D);
-                fontRenderer.drawString(progress, 0, 0, 0x000000);
+                fontRendererObj.drawString(progress, 0, 0, 0x000000);
                 glPopMatrix();
             }
 

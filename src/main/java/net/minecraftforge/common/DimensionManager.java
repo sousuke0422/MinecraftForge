@@ -250,7 +250,7 @@ public class DimensionManager
             world.getWorldInfo().setGameType(mcServer.getGameType());
         }
 
-        mcServer.func_147139_a(mcServer.func_147135_j());
+        mcServer.setDifficultyForAllWorlds(mcServer.getDifficulty());
     }
 
     public static WorldServer getWorld(int id)

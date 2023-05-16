@@ -58,7 +58,7 @@ public class BlockFluidClassic extends BlockFluidBase
     }
 
     @Override
-    public boolean canCollideCheck(int meta, boolean fullHit)
+    public boolean canStopRayTrace(int meta, boolean fullHit)
     {
         return fullHit && meta == 0;
     }
@@ -304,11 +304,11 @@ public class BlockFluidClassic extends BlockFluidBase
         }
 
         int density = getDensity(world, x, y, z);
-        if (density == Integer.MAX_VALUE) 
+        if (density == Integer.MAX_VALUE)
         {
              return true;
         }
-        
+
         if (this.density > density)
         {
             return true;

@@ -30,7 +30,7 @@ public class SoundEvent extends Event
         public SoundSourceEvent(SoundManager manager, ISound sound, String uuid)
         {
             super(manager);
-            this.name = sound.getPositionedSoundLocation().getResourcePath();
+            this.name = sound.getSoundLocation().getResourcePath();
             this.sound = sound;
             this.uuid = uuid;
         }

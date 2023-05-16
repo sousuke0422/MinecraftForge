@@ -183,7 +183,7 @@ public class ChestGenHooks
         while(itr.hasNext())
         {
             WeightedRandomChestContent cont = itr.next();
-            if (item.isItemEqual(cont.theItemId) || (item.getItemDamage() == OreDictionary.WILDCARD_VALUE && item.getItem() == cont.theItemId.getItem()))
+            if (item.isItemEqual(cont.theItemId) || (item.getMetadata() == OreDictionary.WILDCARD_VALUE && item.getItem() == cont.theItemId.getItem()))
             {
                 itr.remove();
             }
