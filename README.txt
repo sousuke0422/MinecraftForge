@@ -13,7 +13,9 @@ If you DO NOT have Gradle installed:
 Windows: ./gradlew.bat setupDevWorkspace
 MacOS/Linux: ./gradlew setupDevWorkspace
 
-If you wish to use the Eclipse IDE, run gradle eclipse instead of gradle setupDevWorkspace, or install the Gradle plugin for Eclipse and import the Forge source folder as a Gradle project.
+If you wish to use an IDE:
+For Eclipse: run gradle eclipse instead of gradle setupDevWorkspace, or install the Gradle plugin for Eclipse and import the Forge source folder as a Gradle project.
+For IntelliJ IDEA: run gradle idea instead of gradle setupDevWorkspace, or import the Forge source folder as a Gradle project directly in IDEA.
 
 To get the decompiled classes:
 If you have Gradle: gradle setupDecompWorkspace
@@ -28,6 +30,7 @@ Open a command prompt and navigate to the folder where you cloned this repo.
 Run gradle setupForge to setup your development environment.
 
 To use Eclipse, point your Eclipse workspace at the eclipse folder inside the repo.
+To use IntelliJ IDEA, run gradle idea and then open the generated .ipr file in IDEA, or import the project as a Gradle project.
 
 
 Requirements (for both mod devs and contributors):
