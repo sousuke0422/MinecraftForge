@@ -30,7 +30,7 @@ Open a command prompt and navigate to the folder where you cloned this repo.
 Run gradle setupForge to setup your development environment.
 
 To use Eclipse, point your Eclipse workspace at the eclipse folder inside the repo.
-To use IntelliJ IDEA, run gradle idea and then open the generated .ipr file in IDEA, or import the project as a Gradle project.
+Note: Eclipse is required for developing Forge itself in this version.
 
 
 Requirements (for both mod devs and contributors):
